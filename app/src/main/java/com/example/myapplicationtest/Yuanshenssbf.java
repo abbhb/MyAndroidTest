@@ -554,7 +554,7 @@ public class Yuanshenssbf extends AppCompatActivity {
         ArrayList remainTime = null;
         try {
             remainTime = formatExpRemainTime(jsonObject.getLong("home_coin_recovery_time"));
-            return jsonObject.getInt("current_home_coin")!= jsonObject.getInt("max_home_coin") ? remainTime.get(0)+":"+remainTime.get(1) : "MAX";
+            return jsonObject.getInt("current_home_coin")!= jsonObject.getInt("max_home_coin") ? "还需"+remainTime.get(0)+":"+remainTime.get(1)+"满" : "MAX";
         } catch (JSONException e) {
             e.printStackTrace();
             return "出错了";
@@ -574,11 +574,10 @@ public class Yuanshenssbf extends AppCompatActivity {
     private String resinTime(JSONObject jsonObject) {
         boolean nearFull = false;
         try {
-            nearFull = jsonObject.getLong("current_resin")>=jsonObject.getLong("max_resin")* 0.9;
+            nearFull = (jsonObject.getInt("current_resin")>=jsonObject.getInt("max_resin")* 0.9);
             ArrayList list = formatExpRemainTime(jsonObject.getLong("remained_time"));
 
-            return !nearFull ? "还需"+list.get(0)+":"+list.get(1) : "MAX";
-
+            return !nearFull ? "还需"+list.get(0).toString()+":"+list.get(1).toString() : "MAX";
         } catch (JSONException e) {
             e.printStackTrace();
             return "错误";

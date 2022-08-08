@@ -231,9 +231,18 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.yuanshenfuzhu:
                 Log.e("clicklist","通过xml文件绑定监听");
-                Intent ysfz = new Intent(MainActivity.this, MainActivityplusysfzindex.class);
-                startActivity(ysfz);
-                break;
+
+                String cookie = userav.getString("cookie","");
+                if (cookie.equals("")||cookie.indexOf("token")==-1){
+                    Intent ysfz = new Intent(MainActivity.this, MainActivityplusysfzindex.class);
+                    startActivity(ysfz);
+                    break;
+                }else{
+                    Intent ysfz = new Intent(MainActivity.this, yuanshenlist.class);
+                    startActivity(ysfz);
+                    break;
+                }
+
         }
     }
     class renshu implements Runnable{

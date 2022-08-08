@@ -18,6 +18,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.format.Time;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -415,6 +416,20 @@ public class NewAppWidget extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
         context.startForegroundService(new Intent(context, MyService.class));
+//        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.new_app_widget);
+//
+//        Button button = views.
+//        button.setOnClickListener(new OnClickListener(){
+//
+//            public void onClick(View v) {
+//
+//                Toast toast = Toast.makeText(getApplicationContext(), “Hello world!”, Toast.LENGTH_LONG);//提示被点击了
+//
+//                toast.show();
+//
+//            }
+//
+//        });
 
         for (int appWidgetId : appWidgetIds) {
 

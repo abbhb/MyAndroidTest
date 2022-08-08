@@ -27,20 +27,7 @@ public class MainActivityplusysfzindex extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_activityplusysfzindex);
-//        WebView webView = (WebView) findViewById(R.id.ysfuzhu);
-//        WebSettings webSettings = webView.getSettings();
-//        webSettings.setJavaScriptEnabled(true);//启用js
-////        webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);//解决视频无法播放问题
-//        webView.setWebChromeClient(new WebChromeClient());
-//        webView.setWebViewClient(new WebViewClient());
-//        webView.loadUrl("https://m.bbs.mihoyo.com/ys/#/login");//覆盖WebView默认使用第三方或系统默认浏览器打开网页的行为，使网页用WebView打开
-//        webView.setWebViewClient(new WebViewClient() {
-//            @Override
-//            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-//                view.loadUrl(request.getUrl().toString());
-//                return true;
-//            }
-//        });
+
         myWebView = (WebView) findViewById(R.id.ysfuzhu);
         myWebView.getSettings().setJavaScriptEnabled(true);  //设置WebView属性,运行执行js脚本
         myWebView.loadUrl("https://bbs.mihoyo.com/ys/accountCenter/postList");    //设置网址
@@ -58,11 +45,6 @@ public class MainActivityplusysfzindex extends AppCompatActivity {
                     SharedPreferences.Editor editor = user.edit();
                     editor.putString("cookie",cookie);
                     editor.commit();
-
-
-
-
-
 
 
                 } else {

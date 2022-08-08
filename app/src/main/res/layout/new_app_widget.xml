@@ -27,6 +27,11 @@
             android:layout_width="220dp"
             android:layout_height="match_parent"
             android:text=""/>
+        <Button
+            android:id="@+id/refresh"
+            android:layout_width="13dp"
+            android:layout_height="13dp"
+            android:background="@drawable/refresh"/>
 
     </LinearLayout>
     <LinearLayout

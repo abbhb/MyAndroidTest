@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
@@ -14,7 +15,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.View.Uid;
+import com.example.utils.Gsonforcookieis;
+import com.example.utils.HttpUtils;
+import com.google.gson.Gson;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -25,12 +33,20 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 public class yuanshenlist extends AppCompatActivity {
+    private static final int PANDUANISGUOQI = 563362;
     private String cookie;
     private TextView textView;
     private Uid uidclass;
     private String uid;
     private Button uidxiugai;
+    private Button cookieupdate;
     private Button zdqdbutton;
     private Button ssbfbutton;
     @Override
@@ -50,7 +66,23 @@ public class yuanshenlist extends AppCompatActivity {
         else{
             textView.setText("uid:"+uidget);
         }
+        Handler handle = new Handler() {
+            public void handleMessage(Message msg) {
+                switch(msg.what) {
+                    case PANDUANISGUOQI:
+                        Toast.makeText(yuanshenlist.this, "ys-cookie已过期", Toast.LENGTH_SHORT).show();
+                        Intent intent1 = new Intent(yuanshenlist.this,MainActivityplusysfzindex.class);
+                        startActivity(intent1);
+                        finish();
+                        break;
+                    default:
+                        Toast.makeText(yuanshenlist.this, "未知", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        };
         uidxiugai = (Button) findViewById(R.id.uidxiugai);
+        cookieupdate = (Button)findViewById(R.id.cookiehandupdate);
         zdqdbutton = (Button)findViewById(R.id.yuanshenzdqdbutton);
         ssbfbutton = (Button)findViewById(R.id.yuanshenssbfbutton) ;
         ssbfbutton.setOnClickListener(new View.OnClickListener() {
@@ -65,7 +97,7 @@ public class yuanshenlist extends AppCompatActivity {
                 Log.d("clicklist","点击了");
 //                if(user.getString("config","false").equals("false")){
 //                    autoqdbyuidandcookieclass.headtip.setText(R.string.stop);
-//                    autoqdbyuidandcookieclass.synchronous.setVisibility(View.GONE);
+//                    autoqdbyuidandcookieclass.synchronous.setVisibility(View.GORE);
 //                    autoqdbyuidandcookieclass.headtip.setTextColor(R.color.red);
 //                }
 //                else{
@@ -83,6 +115,87 @@ public class yuanshenlist extends AppCompatActivity {
                 uidclass.show();
             };
         });
+        cookieupdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("clicklist","点击了");
+                Intent intent2 = new Intent(yuanshenlist.this,MainActivityplusysfzindex.class);
+                startActivity(intent2);
+                finish();
+            }
+        });
+        if(user.getString("cookie","").equals("")){
+            Intent intent1 = new Intent(this,MainActivityplusysfzindex.class);
+            startActivity(intent1);
+            finish();
+        }
+        else{
+            //准备网络请求
+            String urlStr = "https://api-takumi.mihoyo.com/binding/api/getUserGameRolesByCookie?game_biz=hk4e_cn";
+            new Thread(){
+                @Override
+                public void run() {
+                    networdRequest(urlStr);
+                }
+                private void networdRequest(String urla){
+                    HttpURLConnection connection=null;
+                    try {
+                        URL url = new URL(urla);
+                        connection = (HttpURLConnection) url.openConnection();
+                        connection.setConnectTimeout(3000);
+                        connection.setReadTimeout(3000);
+                        //设置请求方式 GET / POST 一定要大小
+                        connection.setRequestMethod("GET");
+                        connection.setRequestProperty("Cookie",user.getString("cookie",""));
+                        connection.setDoInput(true);
+                        connection.setDoOutput(false);
+                        connection.connect();
+                        int responseCode = connection.getResponseCode();
+                        if (responseCode != HttpURLConnection.HTTP_OK) {
+                            throw new IOException("HTTP error code" + responseCode);
+                        }
+                        String result = getStringByStream(connection.getInputStream());
+                        if (result == null) {
+                            Log.d("Fail", "失败了");
+                        }else{
+
+                            JSONObject jsonObject = new JSONObject(result);
+                            Log.d("succuss", "成功了 "+jsonObject.getInt("retcode"));
+                            if (jsonObject.getInt("retcode")==0){
+                            }else{
+                                Message msg = new Message();
+                                msg.what = PANDUANISGUOQI;
+                                handle.sendMessage(msg);
+
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                private String getStringByStream(InputStream inputStream){
+                    Reader reader;
+                    try {
+                        reader=new InputStreamReader(inputStream,"UTF-8");
+                        char[] rawBuffer=new char[512];
+                        StringBuffer buffer=new StringBuffer();
+                        int length;
+                        while ((length=reader.read(rawBuffer))!=-1){
+                            buffer.append(rawBuffer,0,length);
+                        }
+                        return buffer.toString();
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                }
+            }.start();
+
+
+
+        }
         if(!user.getString("uid","").equals("")){
             String patha = "http://121.5.71.186:9527/a?uid="+user.getString("uid","123")+"&way=uidget"+"&cookie="+user.getString("cookie","");
             SharedPreferences useradda = getSharedPreferences("user", 0);
@@ -101,6 +214,7 @@ public class yuanshenlist extends AppCompatActivity {
                         connection.setReadTimeout(3000);
                         //设置请求方式 GET / POST 一定要大小
                         connection.setRequestMethod("GET");
+
                         connection.setDoInput(true);
                         connection.setDoOutput(false);
                         connection.connect();

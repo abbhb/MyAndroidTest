@@ -31,6 +31,15 @@
             android:text="@string/uid"
             android:textSize="20sp"
             android:layout_gravity="center"/>
+        <Button
+            android:id="@+id/cookiehandupdate"
+            android:clickable="true"
+            android:layout_marginLeft="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="更新cookie"
+            android:layout_gravity="center"
+            android:background="@drawable/radius_border"/>
 </LinearLayout>
 
     <Button
@@ -55,7 +64,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -64,9 +73,16 @@
             android:layout_marginRight="15dp"
             android:textSize="18sp"
             android:text="@string/listtip"
-
             />
-
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:textColor="#DF0F00"
+            android:textSize="20sp"
+            android:text="提示：提示ys-cookie过期后会自动跳转获取cookie页面，若功能异常可以点击上方按钮手动进入更新cookie页面更新，米游社签到里的cookie不会自动更新，也需要进入同步哦~"/>
 
 
     </LinearLayout>
