@@ -1,0 +1,26 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <declare-styleable name="StrokeImageView">
+
+        <attr name="shapeMode" format="enum">// 描边形状，圆形 or 矩形
+            <enum name="circle" value="0" />
+            <enum name="roundRect" value="1" />
+        </attr>
+
+        <attr name="roundRadius" format="dimension" />
+        // 描边弧度
+        <attr name="strokeWidth" format="dimension" />
+        // 描边宽度
+        <attr name="strokeColor" format="color" />
+        // 描边的颜色
+    </declare-styleable>
+
+    <!--
+Refer to App Widget Documentation for margin information
+http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
+    -->
+    <dimen name="widget_margin">0dp</dimen>
+
+</resources>

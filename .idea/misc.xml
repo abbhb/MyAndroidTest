@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/drawable/color1to2.xml" value="0.1515" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/drawable/radius_border.xml" value="0.132" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/drawable/radius_border_input.xml" value="0.1705" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/drawable/radius_border_put.xml" value="0.1705" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/drawable/radius_skip.xml" value="0.1705" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/drawable/radius_skip_1.xml" value="0.1305" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/drawable/radius_skip_2.xml" value="0.1305" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/drawable/radius_skip_3.xml" value="0.1085" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/drawable/setbar_bg.xml" value="0.1695" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/drawable/setbar_bg1.xml" value="0.1215" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/drawable/setbar_bg2.xml" value="0.1695" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/drawable/setbar_bg3.xml" value="0.1695" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/drawable/shape_10dp_corners.xml" value="0.209" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/drawable/shape_10dp_cornersf5f5f5.xml" value="0.209" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/drawable/shape_10dp_cornersyellow.xml" value="0.1695" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/drawable/shape_10dp_cornersyellowcopy.xml" value="0.113" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/drawable/shape_10dp_cornersyellowcopyright.xml" value="0.113" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/activity_first_view.xml" value="0.264" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/activity_login.xml" value="0.2" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/activity_login_activity3d.xml" value="0.23489583333333333" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/activity_main.xml" value="0.264" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/activity_main_activityforcharroom.xml" value="0.2" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/activity_main_activityforcharroom_inroom.xml" value="0.264" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/activity_main_activityforcharroomregister.xml" value="0.2596491228070175" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/activity_main_activityfortizhong.xml" value="0.12132725430597771" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/activity_main_activityforwlts.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/activity_main_activityplusysfzindex.xml" value="0.1765625" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/activity_main_yuan_shen_bq.xml" value="0.13177083333333334" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/activity_yuanshenlist.xml" value="0.264" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/activity_yuanshenssbf.xml" value="0.264" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/autoqd.xml" value="0.264" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/dialog_loadding.xml" value="0.1" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/msg_item.xml" value="0.25" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/new_app_widget.xml" value="0.264" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/new_app_widget_configure.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/radius_skip_1.xml" value="0.23489583333333333" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/uid.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/xml/circle.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/xml/click.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/xml/network_security_config.xml" value="0.1" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/xml/previous.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/xml/shape.xml" value="0.24947916666666667" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
