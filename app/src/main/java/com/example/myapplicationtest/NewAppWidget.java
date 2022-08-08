@@ -417,9 +417,6 @@ public class NewAppWidget extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
         context.startForegroundService(new Intent(context, MyService.class));
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.new_app_widget);
-        views.setOnClickPendingIntent(R.id.cookiehandupdate,
-                getPendingSelfIntent(context, MyOnClick));
 //
 //        Button button = views.
 //        button.setOnClickListener(new OnClickListener(){
@@ -446,23 +443,7 @@ public class NewAppWidget extends AppWidgetProvider {
 
     }
 
-    PendingIntent getPendingSelfIntent(Context context, String action) {
-        Intent intent = new Intent(context, getClass());
-        intent.setAction(action);
-        return PendingIntent.getBroadcast(context, 0, intent, 0);
-    }
 
-    public void onReceive(Context context, Intent intent) {
-
-        if (MyOnClick.equals(intent.getAction())){
-            //your onClick action is here
-            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-            int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, NewAppWidget.class));
-            if (appWidgetIds.length > 0) {
-                new NewAppWidget().onUpdate(context, appWidgetManager, appWidgetIds);
-            }
-        }
-    };
     @Override
     public void onEnabled(Context context) {
         // Enter relevant functionality for when the first widget is created
