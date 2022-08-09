@@ -1,5 +1,4 @@
 package com.example.utils;
-
 /*
  * Copyright (C) 2012 www.amsoft.cn
  *

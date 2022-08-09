@@ -19,8 +19,8 @@
         <Button
             android:id="@+id/uidxiugai"
             android:clickable="true"
-            android:layout_width="50dp"
-            android:layout_height="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/xiugai"
             android:layout_gravity="center"
             android:background="@drawable/radius_border"/>
@@ -41,50 +41,80 @@
             android:layout_gravity="center"
             android:background="@drawable/radius_border"/>
 </LinearLayout>
-
-    <Button
-        android:id="@+id/yuanshenzdqdbutton"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="5dp"
-        android:text="@string/yuanshenzdqd"
-        android:background="@drawable/radius_skip"/>
-    <Button
-        android:id="@+id/yuanshenssbfbutton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="5dp"
-        android:text="@string/yuanshenbq"
-        android:background="@drawable/radius_skip"/>
-
-
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <TextView
+        android:layout_height="match_parent">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:textSize="18sp"
-            android:text="@string/listtip"
-            />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:textColor="#DF0F00"
-            android:textSize="20sp"
-            android:text="提示：提示ys-cookie过期后会自动跳转获取cookie页面，若功能异常可以点击上方按钮手动进入更新cookie页面更新，米游社签到里的cookie不会自动更新，也需要进入同步哦~"/>
+            android:orientation="vertical">
+            <Button
+                android:id="@+id/yuanshenzdqdbutton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:text="@string/yuanshenzdqd"
+                android:background="@drawable/radius_skip"/>
+            <Button
+                android:id="@+id/yuanshenssbfbutton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:text="@string/yuanshenbq"
+                android:background="@drawable/radius_skip"/>
+            <Button
+                android:id="@+id/yuanshenckfxbutton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:text="@string/yuanshenckfxtitle"
+                android:background="@drawable/radius_skip"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="300dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:textSize="18sp"
+                    android:text="@string/listtip"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:textColor="#DF0F00"
+                    android:textSize="20sp"
+                    android:text="提示：提示ys-cookie过期后会自动跳转获取cookie页面，若功能异常可以点击上方按钮手动进入更新cookie页面更新，米游社签到里的cookie不会自动更新，也需要进入同步哦~"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:textColor="#FBFBFB"
+                    android:textSize="12sp"
+                    android:text="本程序仅供个人学习研究 \n如若侵犯了您的利益烦请联系开发者立即删除！！！"/>
 
 
-    </LinearLayout>
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+
+    </ScrollView>
+
+
 </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

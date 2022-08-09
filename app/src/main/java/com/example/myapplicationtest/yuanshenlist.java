@@ -49,6 +49,7 @@ public class yuanshenlist extends AppCompatActivity {
     private Button cookieupdate;
     private Button zdqdbutton;
     private Button ssbfbutton;
+    private Button ckfxbutton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,7 +85,15 @@ public class yuanshenlist extends AppCompatActivity {
         uidxiugai = (Button) findViewById(R.id.uidxiugai);
         cookieupdate = (Button)findViewById(R.id.cookiehandupdate);
         zdqdbutton = (Button)findViewById(R.id.yuanshenzdqdbutton);
-        ssbfbutton = (Button)findViewById(R.id.yuanshenssbfbutton) ;
+        ssbfbutton = (Button)findViewById(R.id.yuanshenssbfbutton);
+        ckfxbutton = (Button)findViewById(R.id.yuanshenckfxbutton);
+        ckfxbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent1 = new Intent(yuanshenlist.this,MainActivityForCKFX.class);
+                startActivity(intent1);
+            }
+        });
         ssbfbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
