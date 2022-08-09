@@ -129,6 +129,10 @@ public class Yuanshenssbf extends AppCompatActivity {
             public void handleMessage(Message msg) {
                 switch(msg.what) {
                     case UPDATA_MSG:
+                        if(jsonObject==null){
+                            Toast.makeText(Yuanshenssbf.this, "空指针,请重试", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
                         try {
                             textycsznum.setText(jsonObject.getString("current_resin")+"/160");
                             textmrwtnum.setText(jsonObject.getString("finished_task_num")+"/"+jsonObject.getString("total_task_num"));
@@ -143,6 +147,7 @@ public class Yuanshenssbf extends AppCompatActivity {
                             textzbjbmsg.setText(bossStatus(jsonObject));//周本减半消息
                             textclzbmsg.setText(transformerTime(jsonObject));//参量质变消息
                             texttspqmsg.setText(expeditionTime(jsonObject));//探索派遣
+                            texttspqmsg.setText("已经完成了"+expeditionFinishedNumber(jsonObject)+"个");
                             com.alibaba.fastjson.JSONArray tableData = com.alibaba.fastjson.JSONArray.parseArray(jsonObject.getString("expeditions"));
                             int i;
                             JSONObject jsonObjectt;
@@ -575,15 +580,54 @@ public class Yuanshenssbf extends AppCompatActivity {
         boolean nearFull = false;
         try {
             nearFull = (jsonObject.getInt("current_resin")>=jsonObject.getInt("max_resin")* 0.9);
-            ArrayList list = formatExpRemainTime(jsonObject.getLong("remained_time"));
+            ArrayList list = formatExpRemainTime(jsonObject.getLong("resin_recovery_time"));
 
-            return !nearFull ? "还需"+list.get(0).toString()+":"+list.get(1).toString() : "MAX";
+            return !nearFull ? "还需"+list.get(0).toString()+":"+list.get(1).toString()+"分钟恢复" : "MAX";
         } catch (JSONException e) {
             e.printStackTrace();
             return "错误";
         }
     }
 
+    private boolean expeditionStatusAlert(JSONObject genshinData) {
+        if (expeditionFinishedNumber(genshinData) != 0) {
+            return true;
+        } else {
+            try {
+                if (genshinData.getInt("current_expedition_num")!= genshinData.getInt("max_expedition_num")) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+    }
+
+    private int expeditionFinishedNumber(JSONObject jsonObject){
+        com.alibaba.fastjson.JSONArray tableData = null;
+        try {
+            tableData = com.alibaba.fastjson.JSONArray.parseArray(jsonObject.getString("expeditions"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        int i;
+        JSONObject jsonObjectt;
+        int finishedNumber=0;
+        for(i=0;i <tableData.toArray().length;i++){
+            try {
+                jsonObjectt = new JSONObject(tableData.getString(i));
+                if(jsonObjectt.getString("status").equals("Finished")){
+                    finishedNumber+=1;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return finishedNumber;
+    }
     private ArrayList formatExpRemainTime(long timeRemain) {
         long processTimeTmp = timeRemain / 60;
         long hour = processTimeTmp / 60;

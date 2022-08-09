@@ -88,27 +88,37 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
+                    android:gravity="right"
                     android:background="@drawable/shape_10dp_cornersyellowcopyright">
                     <LinearLayout
-                        android:layout_width="170dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent">
                         <TextView
                             android:id="@+id/yuanshenycszmsg"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:gravity="center_vertical" />
+                            android:gravity="center_vertical"
+                            android:text="@string/appwidget_text"/>
                     </LinearLayout>
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.0"
+                        android:alpha="0">
+                        <!--这里撑开布局-->
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="right">
                         <TextView
                             android:id="@+id/yuanshenycsznum"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:gravity="center_vertical|right"
+                            android:gravity="center"
                             android:layout_marginRight="3dp"
-                            android:minWidth="100dp"
+                            android:maxLines="1"
+
                             android:text="0/160"/>
                     </LinearLayout>
                 </LinearLayout>
@@ -158,19 +168,28 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:gravity="right"
                     android:orientation="horizontal"
                     android:background="@drawable/shape_10dp_cornersyellowcopyright">
                     <LinearLayout
-                        android:layout_width="170dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent">
                         <TextView
                             android:id="@+id/yuanshenmrwtmsg"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:gravity="center_vertical" />
+                            android:gravity="center_vertical"
+                            android:text="@string/appwidget_text"/>
                     </LinearLayout>
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.0"
+                        android:alpha="0">
+                        <!--这里撑开布局-->
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="right">
                         <TextView
@@ -178,8 +197,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:gravity="center_vertical|right"
-                            android:layout_marginRight="3dp"
-                            android:minWidth="100dp"
+
+                            android:maxLines="1"
                             android:text="0/4"/>
                     </LinearLayout>
                 </LinearLayout>
@@ -231,9 +250,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
+                    android:gravity="right"
                     android:background="@drawable/shape_10dp_cornersyellowcopyright">
                     <LinearLayout
-                        android:layout_width="170dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent">
                         <TextView
                             android:id="@+id/yuanshendtbqmsg"
@@ -242,7 +262,14 @@
                             android:gravity="center_vertical" />
                     </LinearLayout>
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.0"
+                        android:alpha="0">
+                        <!--这里撑开布局-->
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="right">
                         <TextView
@@ -251,7 +278,9 @@
                             android:layout_height="match_parent"
                             android:gravity="center_vertical|right"
                             android:layout_marginRight="3dp"
-                            android:minWidth="100dp"
+
+                            android:maxLines="1"
+
                             android:text="1000/2000"/>
                     </LinearLayout>
                 </LinearLayout>
@@ -303,9 +332,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
+                    android:gravity="right"
                     android:background="@drawable/shape_10dp_cornersyellowcopyright">
                     <LinearLayout
-                        android:layout_width="170dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent">
                         <TextView
                             android:id="@+id/yuanshenzbjbmsg"
@@ -314,13 +344,22 @@
                             android:gravity="center_vertical" />
                     </LinearLayout>
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.0"
+                        android:alpha="0">
+                        <!--这里撑开布局-->
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="right">
                         <TextView
                             android:id="@+id/yuanshenzbjbnum"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
+                            android:maxLines="2"
+                            android:text="@string/appwidget_text"
                             android:gravity="center_vertical" />
                     </LinearLayout>
                 </LinearLayout>
@@ -372,9 +411,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
+                    android:gravity="right"
                     android:background="@drawable/shape_10dp_cornersyellowcopyright">
                     <LinearLayout
-                        android:layout_width="170dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent">
                         <TextView
                             android:id="@+id/yuanshenclzbmsg"
@@ -383,7 +423,14 @@
                             android:gravity="center_vertical" />
                     </LinearLayout>
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.0"
+                        android:alpha="0">
+                        <!--这里撑开布局-->
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="right">
                         <TextView
@@ -391,8 +438,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:gravity="center_vertical|right"
-                            android:layout_marginRight="3dp"
-                            android:minWidth="100dp" />
+                            android:maxLines="1"
+                            />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -440,9 +487,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
+                    android:gravity="right"
                     android:background="@drawable/shape_10dp_cornersyellowcopyright">
                     <LinearLayout
-                        android:layout_width="170dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent">
                         <TextView
                             android:id="@+id/yuanshentspqmsg"
@@ -451,7 +499,14 @@
                             android:gravity="center_vertical" />
                     </LinearLayout>
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.0"
+                        android:alpha="0">
+                        <!--这里撑开布局-->
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="right">
                         <TextView
@@ -460,7 +515,8 @@
                             android:layout_height="match_parent"
                             android:gravity="center_vertical|right"
                             android:layout_marginRight="3dp"
-                            android:minWidth="100dp"
+                            android:maxLines="1"
+
                             android:text="0/5/5"/>
                     </LinearLayout>
                 </LinearLayout>
