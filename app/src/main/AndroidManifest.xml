@@ -18,6 +18,7 @@
         android:roundIcon="@drawable/tubiao"
         android:supportsRtl="true"
         android:persistent="true"
+
         android:theme="@style/Theme.MyApplicationTest"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
@@ -84,6 +85,7 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
+            android:configChanges="uiMode"
             android:exported="false" />
     </application>
 

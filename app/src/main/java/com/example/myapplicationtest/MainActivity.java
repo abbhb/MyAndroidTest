@@ -10,6 +10,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -81,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         startForegroundService(new Intent(this, MyService.class));
+
         new Thread(() -> {
             try {
                 Log.d("tag","开始socket");
