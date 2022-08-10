@@ -60,8 +60,6 @@ public class MyService extends Service {
                 // TODO Auto-generated method stub
                 //若操作UI线程需要借助Handler
                 //获取Widgets管理器
-
-
                 Message msg = new Message();
                 msg.what = UPDATA_MSGG;
                 mHandler.sendMessage(msg);
