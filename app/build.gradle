@@ -31,6 +31,7 @@ android {
 }
 
 dependencies {
+    implementation 'com.github.Ye-Miao:StatusBarUtil:1.7.5'
     implementation 'androidx.work:work-runtime:2.7.1'
     implementation "androidx.viewpager2:viewpager2:1.0.0"
     implementation 'com.alibaba:fastjson:2.0.10.graal'

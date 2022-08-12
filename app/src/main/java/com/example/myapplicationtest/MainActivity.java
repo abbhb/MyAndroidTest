@@ -1,5 +1,6 @@
 package com.example.myapplicationtest;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,11 +12,15 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -27,6 +32,7 @@ import com.example.function.openpersonsnum;
 import com.example.myapplicationtest.server.MyService;
 import com.github.javiersantos.appupdater.AppUpdater;
 import com.github.javiersantos.appupdater.enums.UpdateFrom;
+import com.leaf.library.StatusBarUtil;
 
 import org.json.JSONObject;
 
@@ -37,12 +43,15 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.Socket;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.Date;
-
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 public class MainActivity extends AppCompatActivity {
     private static final int COOKIE_NOT = 345322;
     private static final int UPADTA_WIDGET = 143322;
@@ -51,10 +60,21 @@ public class MainActivity extends AppCompatActivity {
     private static final int UPDATA_PEOPLE=2313114;
     private SharedPreferences userav;
     private SharedPreferences.Editor editorav;
+    Toolbar tl_content;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //去掉状态栏
+        tl_content = (Toolbar) findViewById(R.id.tl_content);
+        //和状态栏一起显示渐变色
+        StatusBarUtil.setGradientColor(this, tl_content);
+        //把toolbar作为系统自带的Actionbar
+        setSupportActionBar(tl_content);
+
+
+
+
         renshu1 = (TextView)findViewById(R.id.cishutexty);
         userav = getSharedPreferences("user",0);
         editorav = userav.edit();
@@ -254,4 +274,43 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
+
+    //加载菜单
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_content, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    //菜单显示图标
+    @Override
+    public boolean onMenuOpened(int featureId, Menu menu) {
+        if (menu != null) {
+            if (menu.getClass().getSimpleName().equalsIgnoreCase("MenuBuilder")) {
+                try {
+                    Method method = menu.getClass().getDeclaredMethod("setOptionalIconsVisible", Boolean.TYPE);
+                    method.setAccessible(true);
+                    method.invoke(menu, true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return super.onMenuOpened(featureId, menu);
+    }
+
+    //菜单选项点击事件
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId())
+        {
+            case R.id.i_setVisible:
+                //设置本机蓝牙设备对外可见
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+
 }

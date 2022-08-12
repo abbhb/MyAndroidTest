@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/i_setVisible"
+        android:title="设置(没做完)"
+        app:showAsAction="never|withText"
+        android:icon="@drawable/dtbq"
+        />
+<!--    <item-->
+<!--        android:id="@+id/i_search"-->
+<!--        android:title="搜索蓝牙"-->
+<!--        app:showAsAction="always"-->
+<!--        android:icon="@drawable/ic_search"-->
+<!--        />-->
+
+<!--    <item-->
+<!--        android:id="@+id/i_closeAPP"-->
+<!--        android:title="关闭软件"-->
+<!--        app:showAsAction="never|withText"-->
+<!--        android:icon="@drawable/ic_close"-->
+<!--        />-->
+</menu>
