@@ -90,4 +90,5 @@
     <string name="empty_probability">【  】</string>
     <string name="show_four_sequence"><u>已隐藏，点击展开</u></string>
     <string name="check_new_version"><u>检查新版本</u></string>
+    <string name="yuanshenuserinfo">探索信息查询</string>
 </resources>

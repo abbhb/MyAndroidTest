@@ -50,6 +50,7 @@ public class yuanshenlist extends AppCompatActivity {
     private Button zdqdbutton;
     private Button ssbfbutton;
     private Button ckfxbutton;
+    private Button yuanshenuserinfobutton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +88,14 @@ public class yuanshenlist extends AppCompatActivity {
         zdqdbutton = (Button)findViewById(R.id.yuanshenzdqdbutton);
         ssbfbutton = (Button)findViewById(R.id.yuanshenssbfbutton);
         ckfxbutton = (Button)findViewById(R.id.yuanshenckfxbutton);
+        yuanshenuserinfobutton = (Button)findViewById(R.id.yuanshenuserinfobutton);
+        yuanshenuserinfobutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent2 = new Intent(yuanshenlist.this,YuanShenUserInfo.class);
+                startActivity(intent2);
+            }
+        });
         ckfxbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
