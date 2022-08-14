@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,11 +56,13 @@ public class yuanshenlist extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_yuanshenlist);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         Intent intent = getIntent();
         textView = (TextView) findViewById(R.id.uid);
         cookie = intent.getStringExtra("cookie");
         uidclass = new Uid(this,R.style.Theme_MyApplicationTest,onClickListener);
         SharedPreferences user = getSharedPreferences("user", 0);
+
         String uidget = user.getString("uid","");
         if(uidget.equals("")||uidget==null||uidget.equals("")){
             //弹出uid输入框

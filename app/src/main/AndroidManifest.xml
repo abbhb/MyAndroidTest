@@ -7,20 +7,43 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 开机启动服务 -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@drawable/tubiao"
+        android:icon="@drawable/tubiao180"
         android:label="@string/app_name"
         android:networkSecurityConfig="@xml/network_security_config"
         android:persistent="true"
-        android:roundIcon="@drawable/tubiao"
+        android:priority="1000"
+        android:roundIcon="@drawable/tubiao180"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplicationTest"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <service
+            android:name=".MyAccessibility"
+            android:enabled="true"
+            android:exported="true"
+            android:foregroundServiceType="location"
+            android:label="趣魔盒守护服务"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+        </service>
+        <activity
+            android:name=".SetApplication"
+            android:exported="false" />
+        <activity
+            android:name=".AskMe"
+            android:exported="false" />
+        <activity
+            android:name=".About"
+            android:exported="false" />
         <activity
             android:name=".YuanShenUserInfo"
             android:exported="false" />
@@ -69,7 +92,8 @@
             android:exported="false" />
         <activity
             android:name=".FirstView"
-            android:exported="true">
+            android:exported="true"
+            android:excludeFromRecents="${isYinCang}">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

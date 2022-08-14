@@ -107,88 +107,9 @@ public class NewAppWidget extends AppWidgetProvider {
             public void handleMessage(Message msg) {
                 switch(msg.what) {
                     case UPADTA_WIDGET:
-                        CharSequence widgetText = context.getString(R.string.appwidget_text);
-
-//                            if (jsonObject.getInt("current_home_coin")==jsonObject.getInt("max_home_coin")){
-//                                intent = new Intent(context,Yuanshenssbf.class);
-//                                pendingIntent = PendingIntent.getActivity(context,0,intent,0);
-//                                manager = (NotificationManager)
-//                                        context.getSystemService(NOTIFICATION_SERVICE);
-//                                //创建Notification对象,
-//                                // 第一个参数是context，第二个参数是一个channelId通知渠道id，
-//                                notification = new NotificationCompat.Builder(context, "YonC")
-//                                        //通知的标题
-//                                        .setContentTitle("阿离的通知")
-//                                        //通知内容
-//                                        .setContentText("你有家吗？有温柔的女孩子在家里等你吗？（洞天宝钱满了）")
-//                                        //小图标，小图标不能有R G B三原色
-//                                        .setSmallIcon(R.drawable.ic_launcher_foreground)
-//                                        //小图标的颜色,int型的颜色，使用Color.parseColor()
-//                                        .setColor(Color.parseColor("#FFff0fff"))
-//                                        //大图标，其中格式是Bitmap类型这里要转换
-//                                        .setLargeIcon(BitmapFactory.decodeResource(context.getResources(),R.drawable.ic_launcher_foreground))
-//                                        //点击通知后的跳转意图
-//                                        .setContentIntent(pendingIntent)
-//                                        //点击通知后自动清理通知
-//                                        .setAutoCancel(true)
-//                                        .build();
-//                                // 在安卓8.0以上需要使用NotificationChannel（通知渠道）
-//                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                                    //三个参数，第一个就是notification对象对应的id
-//                                    //第二个是name，是用户收到通知时会看到的
-//                                    //第三个是重要性优先级
-//                                    NotificationChannel channel = new NotificationChannel("YonC", "YonC",
-//                                            NotificationManager.IMPORTANCE_HIGH);
-//                                    manager.createNotificationChannel(channel);
-//                                }
-//                                manager.notify(1,notification);
-//
-//                            }
-//                            if (jsonObject.getInt("current_resin")>=160){
-//                                Intent intent2 = new Intent(context,Yuanshenssbf.class);
-//                                PendingIntent pendingIntent2 = PendingIntent.getActivity(context,0,intent2,0);
-//                                NotificationManager manager2 = (NotificationManager)
-//                                        context.getSystemService(NOTIFICATION_SERVICE);
-//                                //创建Notification对象,
-//                                // 第一个参数是context，第二个参数是一个channelId通知渠道id，
-//                                Notification notification2 = new NotificationCompat.Builder(context, "YonC")
-//                                        //通知的标题
-//                                        .setContentTitle("原神")
-//                                        //通知内容
-//                                            .setContentText("树脂满了，快收去")
-//                                        //小图标，小图标不能有R G B三原色
-//                                        .setSmallIcon(R.drawable.ic_launcher_foreground)
-//                                        //小图标的颜色,int型的颜色，使用Color.parseColor()
-//                                        .setColor(Color.parseColor("#FFff0fff"))
-//                                        //大图标，其中格式是Bitmap类型这里要转换
-//                                        .setLargeIcon(BitmapFactory.decodeResource(context.getResources(),R.drawable.ic_launcher_foreground))
-//                                        //点击通知后的跳转意图
-//                                        .setContentIntent(pendingIntent2)
-//                                        //点击通知后自动清理通知
-//                                        .setAutoCancel(true)
-//                                        .build();
-//                                // 在安卓8.0以上需要使用NotificationChannel（通知渠道）
-//                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                                    //三个参数，第一个就是notification对象对应的id
-//                                    //第二个是name，是用户收到通知时会看到的
-//                                    //第三个是重要性优先级
-//                                    NotificationChannel channel = new NotificationChannel("YonC", "YonC",
-//                                            NotificationManager.IMPORTANCE_HIGH);
-//                                    manager2.createNotificationChannel(channel);
-//                                }
-//                                manager2.notify(1,notification2);
-//                            }
-
-
-
-
-
-
-
-
                         // Construct the RemoteViews object
                         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.new_app_widget);
-
+                        views.setTextViewText(R.id.bqtip,"");
 
                         //        views.setTextViewText(R.id.appwidget_text, widgetText);
                         try {

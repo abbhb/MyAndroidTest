@@ -7,9 +7,8 @@
         android:bottomRightRadius="10dp"
         android:bottomLeftRadius="10dp"
         android:topLeftRadius="10dp" />
-    <stroke android:width="0dp" android:color="#09C80C" android:dashWidth="3dp"/>
     <!-- 背景色 -->
-    <solid android:color="#09C80C"/>
+    <solid android:color="#F8F8F8"/>
 
 </shape>
 

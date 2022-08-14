@@ -80,11 +80,6 @@ public class MyService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
 
-
-
-
-
-
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             notificationChannel = new NotificationChannel(
                     NOTIFICATION_CHANNEL_ID,
@@ -119,7 +114,9 @@ public class MyService extends Service {
 
     @Override
     public void onDestroy() {
+        stopForeground(true);
         super.onDestroy();
+
         Log.d("TAG","onDestroy myService");
     }
 

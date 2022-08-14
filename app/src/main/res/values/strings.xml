@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">不知名的小玩意</string>
+    <string name="app_name">趣魔盒</string>
     <string name="string1">请输入你的体重</string>
     <string name="danwei">斤</string>
     <string name="path">http://127.0.0.1:5000</string>
@@ -39,7 +39,7 @@
     <string name="synchronousbutton">同步</string>
     <string name="savetext">保存</string>
     <string name="listtip">温馨提示，我们以uid为用户唯一标识，更改了uid的话会导致配置文件丢失，和已经启用的功能失效等等.\n程序将定时清除cookie过期的用户，如果需要再次启用，可以自行启用！</string>
-    <string name="yuanshenbq">原神实时便筏</string>
+    <string name="yuanshenbq">实时便筏</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="configure">Configure</string>
     <string name="add_widget">Add widget</string>
@@ -55,7 +55,7 @@
     <string name="yuanshenzbjbstr4">周本减半</string>
     <string name="yuanshenclzb4">参量质变</string>
     <string name="yuanshentspq4">探索派遣</string>
-    <string name="yuanshenckfxtitle">原神抽卡分析</string>
+    <string name="yuanshenckfxtitle">抽卡分析</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -91,4 +91,6 @@
     <string name="show_four_sequence"><u>已隐藏，点击展开</u></string>
     <string name="check_new_version"><u>检查新版本</u></string>
     <string name="yuanshenuserinfo">探索信息查询</string>
+    <string name="yuanshenfuzhutip">系列小工具</string>
+    <string name="app_updater_start_notification_content">start</string>
 </resources>

@@ -225,10 +225,62 @@
                             android:layout_width="230dp"
                             android:layout_height="118dp"
                             android:layout_marginTop="18dp"
-                            android:src="@drawable/jqqd"/>
+                            android:src="@drawable/yuanshenfuzhu"/>
 
                         <TextView
                             android:id="@+id/tzjsqImageViewTexttttnnn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_alignLeft="@+id/tesfsaimannn"
+                            android:layout_alignTop="@+id/tesfsaimannn"
+                            android:layout_alignRight="@+id/tesfsaimannn"
+                            android:layout_alignBottom="@+id/tesfsaimannn"
+                            android:layout_marginLeft="2dp"
+                            android:layout_marginBottom="4dp"
+                            android:gravity="bottom"
+                            android:text="@string/yuanshenfuzhutip"
+                            android:textColor="#000000" />
+                    </androidx.cardview.widget.CardView>
+
+
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/jqqdcard"
+                        android:layout_width="wrap_content"
+                        android:layout_height="160dp"
+                        android:layout_gravity="center"
+                        android:clickable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        card_view:cardPreventCornerOverlap="true"
+                        card_view:cardUseCompatPadding="true"
+                        card_view:cardCornerRadius="8dp">
+
+                        <TextView
+                            android:id="@+id/jqqd"
+                            android:gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:text="@string/jqqd" />
+
+                        <ImageView
+                            android:id="@+id/jqqdimage"
+                            android:layout_width="230dp"
+                            android:layout_height="118dp"
+                            android:layout_marginTop="18dp"
+                            android:src="@drawable/jqqd"/>
+
+                        <TextView
+                            android:id="@+id/jsqdtexttip"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_alignLeft="@+id/tesfsaimannn"
@@ -245,7 +297,6 @@
 
 
                 </LinearLayout>
-
 
                 <LinearLayout
                     android:layout_width="match_parent"

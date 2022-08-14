@@ -10,7 +10,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
 
-    android:background="@drawable/setbar_bg">
+    android:background="@drawable/background_main">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="30dp"
@@ -48,43 +48,98 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <Button
-                android:id="@+id/yuanshenzdqdbutton"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="5dp"
-                android:text="@string/yuanshenzdqd"
-                android:background="@drawable/radius_skip"/>
-            <Button
-                android:id="@+id/yuanshenssbfbutton"
+                android:layout_marginTop="40dp"
+                android:layout_height="130dp"
+                android:orientation="horizontal"
+                android:gravity="left">
+                <LinearLayout
+                    android:layout_width="140dp"
+                    android:layout_marginLeft="35dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/shape_10dp_cornersf5f5f5">
+                    <Button
+                        android:id="@+id/yuanshenzdqdbutton"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:text="@string/yuanshenzdqd"
+                        android:textSize="18sp"
+
+                        android:background="@drawable/radius_skip" />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent">
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="140dp"
+                    android:layout_marginRight="35dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/shape_10dp_cornersf5f5f5">
+                    <Button
+                        android:id="@+id/yuanshenssbfbutton"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:text="@string/yuanshenbq"
+                        android:textSize="18sp"
+                        android:background="@drawable/radius_skip"/>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="5dp"
-                android:text="@string/yuanshenbq"
-                android:background="@drawable/radius_skip"/>
-            <Button
-                android:id="@+id/yuanshenckfxbutton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="5dp"
-                android:text="@string/yuanshenckfxtitle"
-                android:background="@drawable/radius_skip"/>
-            <Button
-                android:id="@+id/yuanshenuserinfobutton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="5dp"
-                android:text="@string/yuanshenuserinfo"
-                android:background="@drawable/radius_skip"/>
+                android:layout_marginTop="20dp"
+                android:layout_height="130dp"
+                android:orientation="horizontal"
+                android:gravity="left">
+                <LinearLayout
+                    android:layout_width="140dp"
+                    android:layout_marginLeft="35dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/shape_10dp_cornersf5f5f5">
+                    <Button
+                        android:id="@+id/yuanshenckfxbutton"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:text="@string/yuanshenckfxtitle"
+                        android:textSize="18sp"
+
+                        android:background="@drawable/radius_skip"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent">
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="140dp"
+                    android:layout_marginRight="35dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/shape_10dp_cornersf5f5f5">
+                    <Button
+                        android:id="@+id/yuanshenuserinfobutton"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:text="@string/yuanshenuserinfo"
+                        android:textSize="18sp"
+
+                        android:background="@drawable/radius_skip"/>
+                </LinearLayout>
+            </LinearLayout>
+
+
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="300dp">
+                android:orientation="vertical">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -103,16 +158,6 @@
                     android:textColor="#DF0F00"
                     android:textSize="20sp"
                     android:text="提示：提示ys-cookie过期后会自动跳转获取cookie页面，若功能异常可以点击上方按钮手动进入更新cookie页面更新，米游社签到里的cookie不会自动更新，也需要进入同步哦~"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:textColor="#FBFBFB"
-                    android:textSize="12sp"
-                    android:text="本程序仅供个人学习研究 \n如若侵犯了您的利益烦请联系开发者立即删除！！！"/>
-
 
             </LinearLayout>
 
