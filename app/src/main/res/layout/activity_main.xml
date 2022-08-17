@@ -254,11 +254,12 @@
                     android:orientation="horizontal">
 
                     <androidx.cardview.widget.CardView
-                        android:id="@+id/jqqdcard"
+                        android:id="@+id/wtsbcard"
                         android:layout_width="wrap_content"
                         android:layout_height="160dp"
                         android:layout_gravity="center"
                         android:clickable="true"
+                        android:onClick="clicklist"
                         android:foreground="?android:attr/selectableItemBackground"
                         card_view:cardPreventCornerOverlap="true"
                         card_view:cardUseCompatPadding="true"
@@ -270,7 +271,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
-                            android:text="@string/jqqd" />
+                            android:text="@string/wtsb" />
 
                         <ImageView
                             android:id="@+id/jqqdimage"
@@ -290,7 +291,7 @@
                             android:layout_marginLeft="2dp"
                             android:layout_marginBottom="4dp"
                             android:gravity="bottom"
-                            android:text="@string/jqqd"
+                            android:text="@string/pytorchyolov5tip"
                             android:textColor="#000000" />
                     </androidx.cardview.widget.CardView>
 

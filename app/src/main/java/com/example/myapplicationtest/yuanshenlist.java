@@ -126,8 +126,14 @@ public class yuanshenlist extends AppCompatActivity {
 //                    autoqdbyuidandcookieclass.headtip.setTextColor(R.color.gre);
 //                    autoqdbyuidandcookieclass.synchronous.setVisibility(View.VISIBLE);
 //                }
-                Intent intent1 = new Intent(yuanshenlist.this,Autoqdbyuidandcookie.class);
-                startActivity(intent1);
+
+
+//                Intent intent1 = new Intent(yuanshenlist.this,Autoqdbyuidandcookie.class);
+//                startActivity(intent1);
+                /**
+                 * 自动签到失效了，停止
+                 * */
+                Toast.makeText(yuanshenlist.this, "此功能暂停使用，失效", Toast.LENGTH_SHORT).show();
             };
         });
         uidxiugai.setOnClickListener(new View.OnClickListener() {

@@ -93,4 +93,6 @@
     <string name="yuanshenuserinfo">探索信息查询</string>
     <string name="yuanshenfuzhutip">系列小工具</string>
     <string name="app_updater_start_notification_content">start</string>
+    <string name="wtsb">物体识别</string>
+    <string name="pytorchyolov5tip">基于pytorch-yolov5</string>
 </resources>

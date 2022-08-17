@@ -33,6 +33,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.function.openpersonsnum;
+import com.example.myapplicationtest.pytorch.yolov5.ObjectDetectionActivity;
 import com.example.myapplicationtest.server.MyService;
 import com.example.utils.Updater;
 import com.github.javiersantos.appupdater.AppUpdater;
@@ -295,6 +296,10 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 }
 
+            case R.id.wtsbcard:
+                Intent intent = new Intent(this, ObjectDetectionActivity.class);
+                startActivity(intent);
+                break;
         }
     }
     class renshu implements Runnable{
