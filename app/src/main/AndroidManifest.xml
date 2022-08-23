@@ -9,7 +9,9 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"/>
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -24,6 +26,18 @@
         android:theme="@style/Theme.MyApplicationTest"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <receiver
+            android:name=".NewAppWidget42"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/new_app_widget42_info" />
+        </receiver>
+
         <service
             android:name=".MyAccessibility"
             android:enabled="true"
@@ -35,6 +49,11 @@
                 <action android:name="android.accessibilityservice.AccessibilityService" />
             </intent-filter>
         </service>
+
+        <activity
+            android:name=".ObjectDetection.ObjectDetectionActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".SetApplication"
             android:exported="false" />
@@ -64,7 +83,7 @@
             android:exported="false" />
 
         <receiver
-            android:name=".NewAppWidget"
+            android:name=".widget.NewAppWidget"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -92,8 +111,8 @@
             android:exported="false" />
         <activity
             android:name=".FirstView"
-            android:exported="true"
-            android:excludeFromRecents="${isYinCang}">
+            android:excludeFromRecents="${isYinCang}"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

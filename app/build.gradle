@@ -4,13 +4,14 @@ plugins {
 
 android {
     compileSdk 32
-
+    aaptOptions.cruncherEnabled = false
+    aaptOptions.useNewCruncher = false
     defaultConfig {
         applicationId "com.example.myapplicationtest"
         minSdk 27
         targetSdk 32
-        versionCode 43
-        versionName "1.5.12"
+        versionCode 49
+        versionName "1.5.18"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //配置APP变量
         manifestPlaceholders.isYinCang = false
@@ -18,7 +19,9 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            zipAlignEnabled false     //Zipalign优化
+            shrinkResources false     // 移除无用的resource文件
+            minifyEnabled false//混淆
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -30,6 +33,13 @@ android {
         viewBinding true
 
     }
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+
 }
 
 dependencies {

@@ -10,16 +10,11 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
-import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
-import android.widget.RemoteViews;
-
-import androidx.core.app.NotificationCompat;
 
 import com.example.myapplicationtest.FirstView;
-import com.example.myapplicationtest.MainActivity;
-import com.example.myapplicationtest.NewAppWidget;
+import com.example.myapplicationtest.widget.NewAppWidget;
 import com.example.myapplicationtest.R;
 
 import java.util.Timer;

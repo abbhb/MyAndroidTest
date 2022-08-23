@@ -6,10 +6,8 @@ import static com.example.utils.Const.UPDATA_MSG;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,15 +17,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.WindowManager;
-import android.webkit.WebChromeClient;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ImageView;
-import android.widget.RemoteViews;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.myapplicationtest.widget.NewAppWidget;
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONException;
@@ -44,7 +38,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class Yuanshenssbf extends AppCompatActivity {
 
@@ -454,12 +447,16 @@ public class Yuanshenssbf extends AppCompatActivity {
                 String carddata = useraaa.getString("cardresultdata","");
                 try {
                     jsonObject = new JSONObject(carddata);
+                    Message msg = new Message();
+                    msg.what = UPDATA_MSG;
+                    handle.sendMessage(msg);
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Message msg = new Message();
+                    msg.what = UPADTA_TIP;
+                    handle.sendMessage(msg);
                 }
-                Message msg = new Message();
-                msg.what = UPDATA_MSG;
-                handle.sendMessage(msg);
+
             }
         }
         else{
