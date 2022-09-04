@@ -19,7 +19,7 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
--keep class com.example.myapplicationtest.ObjectDetection.**{ *; }
--keep class com.example.myapplicationtest.**{ *; }
-
--keep class com.example.myapplicationtest.MainActivity{ *; }
+#-keep class com.example.myapplicationtest.ObjectDetection.**{ *; }
+#-keep class com.example.myapplicationtest.**{ *; }
+#
+#-keep class com.example.myapplicationtest.MainActivity{ *; }

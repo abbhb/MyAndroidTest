@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.example.myapplicationtest.login.LoginReturn;
 import com.example.myapplicationtest.login.LoginUser;
-import com.example.myapplicationtest.ui.login.LoginActivity;
+
 import com.example.utils.httpd;
 import com.google.gson.Gson;
 

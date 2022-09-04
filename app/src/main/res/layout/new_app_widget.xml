@@ -3,7 +3,6 @@
     android:layout_width="340dp"
     android:layout_height="160dp"
     android:orientation="vertical"
-
     android:background="@drawable/shape_10dp_corners"
     android:theme="@style/Theme.MyApplicationTest.AppWidgetContainer">
     <LinearLayout
@@ -28,8 +27,8 @@
             android:layout_height="match_parent"
             android:text=""/>
         <Button
-            android:id="@+id/refresh"
-            android:clickable="true"
+            android:id="@+id/refreshwidget"
+
             android:layout_width="13dp"
             android:layout_height="13dp"
             android:background="@drawable/refresh"/>

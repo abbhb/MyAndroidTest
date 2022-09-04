@@ -1,5 +1,7 @@
 package com.example.myapplicationtest;
 
+import static com.example.values.strings.ysLoginUrl;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -30,31 +32,31 @@ public class MainActivityplusysfzindex extends AppCompatActivity {
 
         myWebView = (WebView) findViewById(R.id.ysfuzhu);
         myWebView.getSettings().setJavaScriptEnabled(true);  //设置WebView属性,运行执行js脚本
-        myWebView.loadUrl("https://bbs.mihoyo.com/ys/accountCenter/postList");    //设置网址
-        myWebView.setWebViewClient(new WebViewClient() {
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                CookieManager cookieManager = CookieManager.getInstance();
-                String CookieStr = cookieManager.getCookie(url);
-
-                Log.d("papattt", CookieStr);
-                if (CookieStr.indexOf("cookie_token")!=-1) {
-                    Toast.makeText(MainActivityplusysfzindex.this, "已获取cookie", Toast.LENGTH_SHORT).show();
-                    cookie = CookieStr;
-                    SharedPreferences user = getSharedPreferences("user", 0);
-                    SharedPreferences.Editor editor = user.edit();
-                    editor.putString("cookie",cookie);
-                    editor.commit();
-
-
-                } else {
-                    Toast.makeText(MainActivityplusysfzindex.this, "不存在cookie", Toast.LENGTH_SHORT).show();
-                }
-
-
-                super.onPageFinished(view, url);
-            }
-        });
+        myWebView.loadUrl(ysLoginUrl);    //设置网址
+//        myWebView.setWebViewClient(new WebViewClient() {
+//            @Override
+//            public void onPageFinished(WebView view, String url) {
+//                CookieManager cookieManager = CookieManager.getInstance();
+//                String CookieStr = cookieManager.getCookie(url);
+//
+//                Log.d("papattt", CookieStr);
+//                if (CookieStr.indexOf("cookie_token")!=-1) {
+//                    Toast.makeText(MainActivityplusysfzindex.this, "已获取cookie", Toast.LENGTH_SHORT).show();
+//                    cookie = CookieStr;
+//                    SharedPreferences user = getSharedPreferences("user", 0);
+//                    SharedPreferences.Editor editor = user.edit();
+//                    editor.putString("cookie",cookie);
+//                    editor.commit();
+//
+//
+//                } else {
+//                    Toast.makeText(MainActivityplusysfzindex.this, "不存在cookie", Toast.LENGTH_SHORT).show();
+//                }
+//
+//
+//                super.onPageFinished(view, url);
+//            }
+//        });
 
         WebSettings webSettings = myWebView.getSettings();
         //如果访问的页面中要与Javascript交互，则webview必须设置支持Javascript
@@ -82,12 +84,14 @@ public class MainActivityplusysfzindex extends AppCompatActivity {
         jsbutton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.d("clicklist","点击了");
+                CookieManager cookieManager = CookieManager.getInstance();
+                String cookie = cookieManager.getCookie(ysLoginUrl);
                 if(cookie.equals("")){
                     Toast.makeText(MainActivityplusysfzindex.this, "没有cookie", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 Intent intent = new Intent(MainActivityplusysfzindex.this,yuanshenlist.class);
-                intent.putExtra("cookie",cookie);
+//                intent.putExtra("cookie", cookie);
                 startActivity(intent);
                 finish();
             };

@@ -1,6 +1,5 @@
 package com.example.utils;
 
-import static android.provider.Settings.System.getString;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;

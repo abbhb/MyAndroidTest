@@ -77,6 +77,7 @@ public class NewAppWidget extends AppWidgetProvider {
     private static Notification notification;
     private static Intent intent;
     private static PendingIntent pendingIntent;
+    private Button refreshwidget;
     static String ongoingtozh(String string){
         if(string.equals("Ongoing")){
             return "正在探索";
@@ -109,6 +110,7 @@ public class NewAppWidget extends AppWidgetProvider {
                     case UPADTA_WIDGET:
                         // Construct the RemoteViews object
                         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.new_app_widget);
+
                         views.setTextViewText(R.id.bqtip,"");
 
                         //        views.setTextViewText(R.id.appwidget_text, widgetText);
@@ -443,7 +445,6 @@ public class NewAppWidget extends AppWidgetProvider {
         for (int appWidgetId : appWidgetIds) {
 
             try {
-
                 updateAppWidget(context, appWidgetManager, appWidgetId);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -452,11 +453,8 @@ public class NewAppWidget extends AppWidgetProvider {
 
     }
 
-
     @Override
     public void onEnabled(Context context) {
-        // Enter relevant functionality for when the first widget is created
-
 
     }
 

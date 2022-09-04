@@ -4,9 +4,12 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/drawable/background_main.xml" value="0.1615" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/drawable/circle.xml" value="0.1475" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/drawable/circle_images.xml" value="0.192" />
         <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/drawable/color1to2.xml" value="0.1515" />
         <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
         <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/drawable/radius_border.xml" value="0.132" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/drawable/radius_border_getChouKaLink.xml" value="0.114" />
         <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/drawable/radius_border_input.xml" value="0.1705" />
         <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/drawable/radius_border_put.xml" value="0.1705" />
         <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/drawable/radius_skip.xml" value="0.1705" />
@@ -22,6 +25,7 @@
         <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/drawable/shape_10dp_cornersyellow.xml" value="0.1695" />
         <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/drawable/shape_10dp_cornersyellowcopy.xml" value="0.113" />
         <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/drawable/shape_10dp_cornersyellowcopyright.xml" value="0.113" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/drawable/ysbuttonforcklink.xml" value="0.1" />
         <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/activity_about.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/activity_ask_me.xml" value="0.264" />
         <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/activity_first_view.xml" value="0.264" />
@@ -36,15 +40,19 @@
         <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/activity_main_activityplusysfzindex.xml" value="0.1765625" />
         <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/activity_main_for_ckfx.xml" value="0.2" />
         <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/activity_main_yuan_shen_bq.xml" value="0.13177083333333334" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/activity_main_yuan_shen_huo_qu_chou_ka_link.xml" value="0.264" />
         <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/activity_object_detection.xml" value="0.1078125" />
         <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/activity_set_application.xml" value="0.264" />
         <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/activity_tip.xml" value="0.24947916666666667" />
-        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/activity_yuan_shen_user_info.xml" value="0.24947916666666667" />
-        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/activity_yuanshenlist.xml" value="0.264" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/activity_user_photo.xml" value="0.2" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/activity_yuan_shen_user_info.xml" value="0.1" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/activity_yuanshenlist.xml" value="0.18596491228070175" />
         <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/activity_yuanshenssbf.xml" value="0.264" />
         <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/autoqd.xml" value="0.264" />
         <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/dialog_loadding.xml" value="0.1" />
         <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/dialog_progress.xml" value="0.2913625304136253" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/fragment_first.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/fragment_second.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/msg_item.xml" value="0.25" />
         <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/new_app_widget.xml" value="0.4" />
         <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/new_app_widget42.xml" value="0.264" />

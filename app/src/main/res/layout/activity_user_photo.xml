@@ -4,12 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".YuanShenUserInfo">
-
-    <WebView
-            android:id="@+id/yuanshenuserinfowebview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-    </WebView>
+    tools:context=".user.UserPhoto">
 
 </androidx.constraintlayout.widget.ConstraintLayout>

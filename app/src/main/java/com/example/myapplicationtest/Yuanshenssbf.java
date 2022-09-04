@@ -3,6 +3,8 @@ package com.example.myapplicationtest;
 import static androidx.constraintlayout.motion.utils.Oscillator.TAG;
 import static com.example.utils.Const.UPADTA_TIP;
 import static com.example.utils.Const.UPDATA_MSG;
+import static com.example.utils.YSUtils.getSSBF;
+import static com.example.values.strings.ysLoginUrl;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -17,6 +19,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.WindowManager;
+import android.webkit.CookieManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,6 +50,7 @@ public class Yuanshenssbf extends AppCompatActivity {
     private static final int UPADTA_4 = 18114;
     private static final int UPADTA_5 = 18115;
     private SharedPreferences useraaa;
+    private String cookie;
     private SharedPreferences.Editor editoraaa;
     private JSONObject jsonObject;
     private TextView textycszmsg;
@@ -76,6 +80,8 @@ public class Yuanshenssbf extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_yuanshenssbf);
+        CookieManager cookieManager = CookieManager.getInstance();
+        cookie = cookieManager.getCookie(ysLoginUrl);
         useraaa = getSharedPreferences("user",0);
         editoraaa = useraaa.edit();
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -122,10 +128,12 @@ public class Yuanshenssbf extends AppCompatActivity {
             public void handleMessage(Message msg) {
                 switch(msg.what) {
                     case UPDATA_MSG:
-                        if(jsonObject==null){
+
+                        if(msg.obj==null){
                             Toast.makeText(Yuanshenssbf.this, "空指针,请重试", Toast.LENGTH_SHORT).show();
                             return;
                         }
+                        jsonObject = (JSONObject) msg.obj;
                         try {
                             textycsznum.setText(jsonObject.getString("current_resin")+"/160");
                             textmrwtnum.setText(jsonObject.getString("finished_task_num")+"/"+jsonObject.getString("total_task_num"));
@@ -354,116 +362,10 @@ public class Yuanshenssbf extends AppCompatActivity {
             }
         };
 
-
+        getSSBF(cookie,handle,useraaa);
         updateWidget();
 
-        String pathaaa = "http://121.5.71.186:9537/a?cookie="+useraaa.getString("cookie","");
-        if(!useraaa.getString("cookie","").equals("")){
-            long time = new Date().getTime();
-            long lasttime = useraaa.getLong("lastupdatatimewithysbq",0);
-            long shentgyu = time-lasttime;
-            if(shentgyu>300000&&!useraaa.getString("cardresultdata","").equals("")){
-                final Thread thread1 = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            System.out.println("子线程执行中");
-                            networdRequest(pathaaa);
-                            //子线程等待, 后唤醒lockObject锁
-                            System.out.println("子线程执行完毕");
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            System.out.println("子线程:"+ e.toString());
-                        }
-                    }
-                    private void networdRequest(String urla){
-                        HttpURLConnection connection=null;
-                        try {
-                            URL url = new URL(urla);
-                            connection = (HttpURLConnection) url.openConnection();
-                            connection.setConnectTimeout(3000);
-                            connection.setReadTimeout(3000);
-                            //设置请求方式 GET / POST 一定要大小
-                            connection.setRequestMethod("GET");
-                            connection.setDoInput(true);
-                            connection.setDoOutput(false);
-                            connection.connect();
-                            int responseCode = connection.getResponseCode();
-                            if (responseCode != HttpURLConnection.HTTP_OK) {
-                                throw new IOException("HTTP error code" + responseCode);
-                            }
-                            String result = getStringByStream(connection.getInputStream());
-                            if (result == null) {
-                                Log.d("Fail", "失败了");
-                            }else{
-                                Log.d("succuss", "成功了 "+result);
-                                editoraaa.putString("cardresultdata",result);
-                                editoraaa.commit();
-                                String cardresultdata = result;
-                                if(result.indexOf("current_expedition_num")!=-1){
-                                    try {
-                                        long dqtime = new Date().getTime();
-                                        editoraaa.putLong("lastupdatatimewithysbq",dqtime);
-                                        editoraaa.commit();
-                                        jsonObject = new JSONObject(cardresultdata);
-                                        Message msg = new Message();
-                                        msg.what = UPDATA_MSG;
-                                        handle.sendMessage(msg);
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }else {
-                                    Message msg = new Message();
-                                    msg.what = UPADTA_TIP;
-                                    handle.sendMessage(msg);
-                                }
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    private String getStringByStream(InputStream inputStream){
-                        Reader reader;
-                        try {
-                            reader=new InputStreamReader(inputStream,"UTF-8");
-                            char[] rawBuffer=new char[512];
-                            StringBuffer buffer=new StringBuffer();
-                            int length;
-                            while ((length=reader.read(rawBuffer))!=-1){
-                                buffer.append(rawBuffer,0,length);
-                            }
-                            return buffer.toString();
-                        } catch (UnsupportedEncodingException e) {
-                            e.printStackTrace();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        return null;
-                    }
-                });
-                thread1.start();    // 线程启动
-            }
-            else{
-                String carddata = useraaa.getString("cardresultdata","");
-                try {
-                    jsonObject = new JSONObject(carddata);
-                    Message msg = new Message();
-                    msg.what = UPDATA_MSG;
-                    handle.sendMessage(msg);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Message msg = new Message();
-                    msg.what = UPADTA_TIP;
-                    handle.sendMessage(msg);
-                }
 
-            }
-        }
-        else{
-            Message msg = new Message();
-            msg.what = UPADTA_TIP;
-            handle.sendMessage(msg);
-        }
     }
 
     private String transformerTime(JSONObject genshinData) {

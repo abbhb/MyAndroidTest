@@ -14,16 +14,18 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.myapplicationtest.ObjectDetection.ObjectDetectionActivity;
-import com.example.myapplicationtest.ObjectDetection.PrePostProcessor;
-import com.example.myapplicationtest.ObjectDetection.Result;
+//import com.example.myapplicationtest.ObjectDetection.ObjectDetectionActivity;
+//import com.example.myapplicationtest.ObjectDetection.PrePostProcessor;
+//import com.example.myapplicationtest.ObjectDetection.Result;
 import com.example.myapplicationtest.server.MyService;
 import com.example.utils.Updater;
 import com.github.javiersantos.appupdater.AppUpdater;
@@ -50,26 +52,27 @@ import java.util.List;
 
 import androidx.appcompat.widget.Toolbar;
 
-import org.pytorch.IValue;
-import org.pytorch.LiteModuleLoader;
-import org.pytorch.Module;
-import org.pytorch.Tensor;
-import org.pytorch.torchvision.TensorImageUtils;
+//import org.pytorch.IValue;
+//import org.pytorch.LiteModuleLoader;
+//import org.pytorch.Module;
+//import org.pytorch.Tensor;
+//import org.pytorch.torchvision.TensorImageUtils;
 
-public class MainActivity extends AppCompatActivity implements Runnable{
+public class MainActivity extends AppCompatActivity{
     private static final int COOKIE_NOT = 345322;
     private static final int UPADTA_WIDGET = 143322;
     private Button buttontijiao;
     private TextView renshu1;
+    private ImageView userphoto;
     private TextView title;
     private static final int UPDATA_PEOPLE=2313114;
     private SharedPreferences userav;
     private SharedPreferences.Editor editorav;
     Toolbar tl_content;
     private Typeface typeface;
-    private Bitmap mBitmap = null;
-    private Module mModule = null;
-    private float mImgScaleX, mImgScaleY, mIvScaleX, mIvScaleY, mStartX, mStartY;
+//    private Bitmap mBitmap = null;
+//    private Module mModule = null;
+//    private float mImgScaleX, mImgScaleY, mIvScaleX, mIvScaleY, mStartX, mStartY;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,17 +84,17 @@ public class MainActivity extends AppCompatActivity implements Runnable{
         StatusBarUtil.setGradientColor(this, tl_content);
         //把toolbar作为系统自带的Actionbar
         setSupportActionBar(tl_content);
+
         for (int i = 0; i < tl_content.getChildCount(); i++) {
             View view = tl_content.getChildAt(i);
             if (view instanceof TextView) {
                 TextView textView = (TextView) view;
                 if ("趣魔盒".equals(textView.getText())) {
-
                     textView.setTypeface(typeface);
-//                    textView.setGravity(Gravity.CENTER);
-//                    Toolbar.LayoutParams params = new Toolbar.LayoutParams(Toolbar.LayoutParams.WRAP_CONTENT, Toolbar.LayoutParams.MATCH_PARENT);
-//                    params.gravity = Gravity.CENTER;
-//                    textView.setLayoutParams(params);
+//                    textView.setLayoutParams(Gravity.CENTER);
+                    Toolbar.LayoutParams params = new Toolbar.LayoutParams(Toolbar.LayoutParams.MATCH_PARENT, Toolbar.LayoutParams.WRAP_CONTENT);
+                    params.gravity = Gravity.CENTER;
+                    textView.setLayoutParams(params);
                 }
             }
         }
@@ -111,6 +114,14 @@ public class MainActivity extends AppCompatActivity implements Runnable{
         renshu1 = (TextView)findViewById(R.id.cishutexty);
         userav = getSharedPreferences("user",0);
         editorav = userav.edit();
+        userphoto = (ImageView) findViewById(R.id.userphoto);
+        userphoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+//                startActivity(intent);
+            }
+        });
         if (userav.getBoolean("confighiddenService",false)){
             ActivityManager am = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
             if (!am.getAppTasks().isEmpty()){
@@ -303,44 +314,44 @@ public class MainActivity extends AppCompatActivity implements Runnable{
                     break;
                 }
 
-            case R.id.wtsbcard:
-                try {
-                    mModule = LiteModuleLoader.load(MainActivity.assetFilePath(getApplicationContext(), "yolov5s.torchscript.ptl"));
-                    BufferedReader br = new BufferedReader(new InputStreamReader(getAssets().open("classes.txt")));
-                    String line;
-                    List<String> classes = new ArrayList<>();
-                    while ((line = br.readLine()) != null) {
-                        classes.add(line);
-                    }
-                    PrePostProcessor.mClasses = new String[classes.size()];
-                    classes.toArray(PrePostProcessor.mClasses);
-                    Intent intent322 = new Intent(MainActivity.this, ObjectDetectionActivity.class);
-                    startActivity(intent322);
-                } catch (IOException e) {
-                    Log.e("Object Detection", "Error reading assets", e);
-                }
-                break;
+//            case R.id.wtsbcard:
+//                try {
+//                    mModule = LiteModuleLoader.load(MainActivity.assetFilePath(getApplicationContext(), "yolov5s.torchscript.ptl"));
+//                    BufferedReader br = new BufferedReader(new InputStreamReader(getAssets().open("classes.txt")));
+//                    String line;
+//                    List<String> classes = new ArrayList<>();
+//                    while ((line = br.readLine()) != null) {
+//                        classes.add(line);
+//                    }
+//                    PrePostProcessor.mClasses = new String[classes.size()];
+//                    classes.toArray(PrePostProcessor.mClasses);
+//                    Intent intent322 = new Intent(MainActivity.this, ObjectDetectionActivity.class);
+//                    startActivity(intent322);
+//                } catch (IOException e) {
+//                    Log.e("Object Detection", "Error reading assets", e);
+//                }
+//                break;
         }
     }
 
-    @Override
-    public void run() {
-        Bitmap resizedBitmap = Bitmap.createScaledBitmap(mBitmap, PrePostProcessor.mInputWidth, PrePostProcessor.mInputHeight, true);
-        final Tensor inputTensor = TensorImageUtils.bitmapToFloat32Tensor(resizedBitmap, PrePostProcessor.NO_MEAN_RGB, PrePostProcessor.NO_STD_RGB);
-        IValue[] outputTuple = mModule.forward(IValue.from(inputTensor)).toTuple();
-        final Tensor outputTensor = outputTuple[0].toTensor();
-        final float[] outputs = outputTensor.getDataAsFloatArray();
-        final ArrayList<Result> results =  PrePostProcessor.outputsToNMSPredictions(outputs, mImgScaleX, mImgScaleY, mIvScaleX, mIvScaleY, mStartX, mStartY);
-
-//        runOnUiThread(() -> {
-//            mButtonDetect.setEnabled(true);
-//            mButtonDetect.setText(getString(R.string.detect));
-//            mProgressBar.setVisibility(ProgressBar.INVISIBLE);
-//            mResultView.setResults(results);
-//            mResultView.invalidate();
-//            mResultView.setVisibility(View.VISIBLE);
-//        });
-    }
+//    @Override
+//    public void run() {
+//        Bitmap resizedBitmap = Bitmap.createScaledBitmap(mBitmap, PrePostProcessor.mInputWidth, PrePostProcessor.mInputHeight, true);
+//        final Tensor inputTensor = TensorImageUtils.bitmapToFloat32Tensor(resizedBitmap, PrePostProcessor.NO_MEAN_RGB, PrePostProcessor.NO_STD_RGB);
+//        IValue[] outputTuple = mModule.forward(IValue.from(inputTensor)).toTuple();
+//        final Tensor outputTensor = outputTuple[0].toTensor();
+//        final float[] outputs = outputTensor.getDataAsFloatArray();
+//        final ArrayList<Result> results =  PrePostProcessor.outputsToNMSPredictions(outputs, mImgScaleX, mImgScaleY, mIvScaleX, mIvScaleY, mStartX, mStartY);
+//
+////        runOnUiThread(() -> {
+////            mButtonDetect.setEnabled(true);
+////            mButtonDetect.setText(getString(R.string.detect));
+////            mProgressBar.setVisibility(ProgressBar.INVISIBLE);
+////            mResultView.setResults(results);
+////            mResultView.invalidate();
+////            mResultView.setVisibility(View.VISIBLE);
+////        });
+//    }
 
     class renshu implements Runnable{
 

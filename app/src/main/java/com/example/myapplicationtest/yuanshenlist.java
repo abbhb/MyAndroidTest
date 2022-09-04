@@ -1,5 +1,7 @@
 package com.example.myapplicationtest;
 
+import static com.example.values.strings.ysLoginUrl;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -12,6 +14,7 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.webkit.CookieManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -44,8 +47,8 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class yuanshenlist extends AppCompatActivity {
-    private static final int PANDUANISGUOQI = 563362;
     private String cookie;
+    private static final int PANDUANISGUOQI = 563362;
     private TextView textView;
     private Uid uidclass;
     private String uid;
@@ -59,14 +62,12 @@ public class yuanshenlist extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_yuanshenlist);
+        CookieManager cookieManage = CookieManager.getInstance();
+        cookie = cookieManage.getCookie(ysLoginUrl);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-
-        Intent intent = getIntent();
         textView = (TextView) findViewById(R.id.uid);
-        cookie = intent.getStringExtra("cookie");
         uidclass = new Uid(this,R.style.Theme_MyApplicationTest,onClickListener);
         SharedPreferences user = getSharedPreferences("user", 0);
-
         String uidget = user.getString("uid","");
         if(uidget.equals("")||uidget==null||uidget.equals("")){
             //弹出uid输入框
@@ -132,12 +133,14 @@ public class yuanshenlist extends AppCompatActivity {
 //                }
 
 
-//                Intent intent1 = new Intent(yuanshenlist.this,Autoqdbyuidandcookie.class);
-//                startActivity(intent1);
+                Intent intent1 = new Intent(yuanshenlist.this,MainActivityYuanShenHuoQuChouKaLink.class);
+                startActivity(intent1);
                 /**
                  * 自动签到失效了，停止
+                 * 改成获取抽卡地址的了
                  * */
-                Toast.makeText(yuanshenlist.this, "此功能暂停使用，失效", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(yuanshenlist.this, "此功能暂停使用，失效", Toast.LENGTH_SHORT).show();
+
             };
         });
         uidxiugai.setOnClickListener(new View.OnClickListener() {
@@ -155,148 +158,152 @@ public class yuanshenlist extends AppCompatActivity {
                 finish();
             }
         });
-        if(user.getString("cookie","").equals("")){
+
+        if(cookie.equals("")){
             Intent intent1 = new Intent(this,MainActivityplusysfzindex.class);
             startActivity(intent1);
             finish();
         }
-        else{
-            //准备网络请求
-            String urlStr = "https://api-takumi.mihoyo.com/binding/api/getUserGameRolesByCookie?game_biz=hk4e_cn";
-            new Thread(){
-                @Override
-                public void run() {
-                    networdRequest(urlStr);
-                }
-                private void networdRequest(String urla){
-                    HttpURLConnection connection=null;
-                    try {
-                        URL url = new URL(urla);
-                        connection = (HttpURLConnection) url.openConnection();
-                        connection.setConnectTimeout(3000);
-                        connection.setReadTimeout(3000);
-                        //设置请求方式 GET / POST 一定要大小
-                        connection.setRequestMethod("GET");
-                        connection.setRequestProperty("Cookie",user.getString("cookie",""));
-                        connection.setDoInput(true);
-                        connection.setDoOutput(false);
-                        connection.connect();
-                        int responseCode = connection.getResponseCode();
-                        if (responseCode != HttpURLConnection.HTTP_OK) {
-                            throw new IOException("HTTP error code" + responseCode);
-                        }
-                        String result = getStringByStream(connection.getInputStream());
-                        if (result == null) {
-                            Log.d("Fail", "失败了");
-                        }else{
-
-                            JSONObject jsonObject = new JSONObject(result);
-                            Log.d("succuss", "成功了 "+jsonObject.getInt("retcode"));
-                            if (jsonObject.getInt("retcode")==0){
-                            }else{
-                                Message msg = new Message();
-                                msg.what = PANDUANISGUOQI;
-                                handle.sendMessage(msg);
-
-                            }
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                private String getStringByStream(InputStream inputStream){
-                    Reader reader;
-                    try {
-                        reader=new InputStreamReader(inputStream,"UTF-8");
-                        char[] rawBuffer=new char[512];
-                        StringBuffer buffer=new StringBuffer();
-                        int length;
-                        while ((length=reader.read(rawBuffer))!=-1){
-                            buffer.append(rawBuffer,0,length);
-                        }
-                        return buffer.toString();
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    return null;
-                }
-            }.start();
-
-
-
-        }
-        if(!user.getString("uid","").equals("")){
-            String patha = "http://121.5.71.186:9527/a?uid="+user.getString("uid","123")+"&way=uidget"+"&cookie="+user.getString("cookie","");
-            SharedPreferences useradda = getSharedPreferences("user", 0);
-            SharedPreferences.Editor editor666 = useradda.edit();
-            new Thread(){
-                @Override
-                public void run() {
-                    networdRequest(patha);
-                }
-                private void networdRequest(String urla){
-                    HttpURLConnection connection=null;
-                    try {
-                        URL url = new URL(urla);
-                        connection = (HttpURLConnection) url.openConnection();
-                        connection.setConnectTimeout(3000);
-                        connection.setReadTimeout(3000);
-                        //设置请求方式 GET / POST 一定要大小
-                        connection.setRequestMethod("GET");
-
-                        connection.setDoInput(true);
-                        connection.setDoOutput(false);
-                        connection.connect();
-                        int responseCode = connection.getResponseCode();
-                        if (responseCode != HttpURLConnection.HTTP_OK) {
-                            throw new IOException("HTTP error code" + responseCode);
-                        }
-                        String result = getStringByStream(connection.getInputStream());
-                        if (result == null) {
-                            Log.d("Fail", "失败了");
-                        }else{
-                            Log.d("succuss", "成功了 "+result);
-                            if(result.equals("cunzai")){
-                                editor666.putString("config","true");
-                                editor666.commit();
-                            }
-                            else{
-                                editor666.putString("config","false");
-                                editor666.commit();
-                            }
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                private String getStringByStream(InputStream inputStream){
-                    Reader reader;
-                    try {
-                        reader=new InputStreamReader(inputStream,"UTF-8");
-                        char[] rawBuffer=new char[512];
-                        StringBuffer buffer=new StringBuffer();
-                        int length;
-                        while ((length=reader.read(rawBuffer))!=-1){
-                            buffer.append(rawBuffer,0,length);
-                        }
-                        return buffer.toString();
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    return null;
-                }
-            }.start();
-        }
-        else{
-            SharedPreferences useradda = getSharedPreferences("user", 0);
-            SharedPreferences.Editor editor666 = useradda.edit();
-            editor666.putString("config","false");
-            editor666.commit();
-        }
+//        else{
+//            //准备网络请求
+//            String urlStr = "https://api-takumi.mihoyo.com/binding/api/getUserGameRolesByCookie?game_biz=hk4e_cn";
+//            new Thread(){
+//                @Override
+//                public void run() {
+//                    networdRequest(urlStr);
+//                }
+//                private void networdRequest(String urla){
+//                    HttpURLConnection connection=null;
+//                    try {
+//                        URL url = new URL(urla);
+//                        connection = (HttpURLConnection) url.openConnection();
+//                        connection.setConnectTimeout(3000);
+//                        connection.setReadTimeout(3000);
+//                        //设置请求方式 GET / POST 一定要大小
+//                        connection.setRequestMethod("GET");
+//                        connection.setRequestProperty("Cookie",cookie);
+//                        connection.setDoInput(true);
+//                        connection.setDoOutput(false);
+//                        connection.connect();
+//                        int responseCode = connection.getResponseCode();
+//                        if (responseCode != HttpURLConnection.HTTP_OK) {
+//                            throw new IOException("HTTP error code" + responseCode);
+//                        }
+//                        String result = getStringByStream(connection.getInputStream());
+//                        if (result == null) {
+//                            Log.d("Fail", "失败了");
+//                        }else{
+//
+//                            JSONObject jsonObject = new JSONObject(result);
+//                            Log.d("succuss", "成功了 "+jsonObject.getInt("retcode"));
+//                            if (jsonObject.getInt("retcode")==0){
+//                            }else{
+//                                Message msg = new Message();
+//                                msg.what = PANDUANISGUOQI;
+//                                handle.sendMessage(msg);
+//
+//                            }
+//                        }
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//                private String getStringByStream(InputStream inputStream){
+//                    Reader reader;
+//                    try {
+//                        reader=new InputStreamReader(inputStream,"UTF-8");
+//                        char[] rawBuffer=new char[512];
+//                        StringBuffer buffer=new StringBuffer();
+//                        int length;
+//                        while ((length=reader.read(rawBuffer))!=-1){
+//                            buffer.append(rawBuffer,0,length);
+//                        }
+//                        return buffer.toString();
+//                    } catch (UnsupportedEncodingException e) {
+//                        e.printStackTrace();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                    return null;
+//                }
+//            }.start();
+//
+//
+//
+//        }
+        /**
+         * 弃用，自动签到相关
+         */
+//        if(!user.getString("uid","").equals("")){
+//            String patha = "http://121.5.71.186:9527/a?uid="+user.getString("uid","123")+"&way=uidget"+"&cookie="+user.getString("cookie","");
+//            SharedPreferences useradda = getSharedPreferences("user", 0);
+//            SharedPreferences.Editor editor666 = useradda.edit();
+//            new Thread(){
+//                @Override
+//                public void run() {
+//                    networdRequest(patha);
+//                }
+//                private void networdRequest(String urla){
+//                    HttpURLConnection connection=null;
+//                    try {
+//                        URL url = new URL(urla);
+//                        connection = (HttpURLConnection) url.openConnection();
+//                        connection.setConnectTimeout(3000);
+//                        connection.setReadTimeout(3000);
+//                        //设置请求方式 GET / POST 一定要大小
+//                        connection.setRequestMethod("GET");
+//
+//                        connection.setDoInput(true);
+//                        connection.setDoOutput(false);
+//                        connection.connect();
+//                        int responseCode = connection.getResponseCode();
+//                        if (responseCode != HttpURLConnection.HTTP_OK) {
+//                            throw new IOException("HTTP error code" + responseCode);
+//                        }
+//                        String result = getStringByStream(connection.getInputStream());
+//                        if (result == null) {
+//                            Log.d("Fail", "失败了");
+//                        }else{
+//                            Log.d("succuss", "成功了 "+result);
+//                            if(result.equals("cunzai")){
+//                                editor666.putString("config","true");
+//                                editor666.commit();
+//                            }
+//                            else{
+//                                editor666.putString("config","false");
+//                                editor666.commit();
+//                            }
+//                        }
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//                private String getStringByStream(InputStream inputStream){
+//                    Reader reader;
+//                    try {
+//                        reader=new InputStreamReader(inputStream,"UTF-8");
+//                        char[] rawBuffer=new char[512];
+//                        StringBuffer buffer=new StringBuffer();
+//                        int length;
+//                        while ((length=reader.read(rawBuffer))!=-1){
+//                            buffer.append(rawBuffer,0,length);
+//                        }
+//                        return buffer.toString();
+//                    } catch (UnsupportedEncodingException e) {
+//                        e.printStackTrace();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                    return null;
+//                }
+//            }.start();
+//        }
+//        else{
+//            SharedPreferences useradda = getSharedPreferences("user", 0);
+//            SharedPreferences.Editor editor666 = useradda.edit();
+//            editor666.putString("config","false");
+//            editor666.commit();
+//        }
 
 
     }
@@ -350,72 +357,75 @@ public class yuanshenlist extends AppCompatActivity {
                     editor.commit();
                     uidclass.dismiss();
                     textView.setText("uid:"+uid1q);
-                    if(!user.getString("uid","").equals("")){
-                        String patha = "http://121.5.71.186:9527/a?uid="+user.getString("uid","")+"&way=uidget"+"&cookie="+user.getString("cookie","");
-
-                        new Thread(){
-                            @Override
-                            public void run() {
-                                networdRequest(patha);
-                            }
-                            private void networdRequest(String urla){
-                                HttpURLConnection connection=null;
-                                try {
-                                    URL url = new URL(urla);
-                                    connection = (HttpURLConnection) url.openConnection();
-                                    connection.setConnectTimeout(3000);
-                                    connection.setReadTimeout(3000);
-                                    //设置请求方式 GET / POST 一定要大小
-                                    connection.setRequestMethod("GET");
-                                    connection.setDoInput(true);
-                                    connection.setDoOutput(false);
-                                    connection.connect();
-                                    int responseCode = connection.getResponseCode();
-                                    if (responseCode != HttpURLConnection.HTTP_OK) {
-                                        throw new IOException("HTTP error code" + responseCode);
-                                    }
-                                    String result = getStringByStream(connection.getInputStream());
-                                    if (result == null) {
-                                        Log.d("Fail", "失败了");
-                                    }else{
-                                        Log.d("succuss", "成功了 "+result);
-                                        if(result.equals("cunzai")){
-                                            editor.putString("config","true");
-                                            editor.commit();
-                                        }
-                                        else{
-                                            editor.putString("config","false");
-                                            editor.commit();
-                                        }
-                                    }
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                            private String getStringByStream(InputStream inputStream){
-                                Reader reader;
-                                try {
-                                    reader=new InputStreamReader(inputStream,"UTF-8");
-                                    char[] rawBuffer=new char[512];
-                                    StringBuffer buffer=new StringBuffer();
-                                    int length;
-                                    while ((length=reader.read(rawBuffer))!=-1){
-                                        buffer.append(rawBuffer,0,length);
-                                    }
-                                    return buffer.toString();
-                                } catch (UnsupportedEncodingException e) {
-                                    e.printStackTrace();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                                return null;
-                            }
-                        }.start();
-                    }
-                    else{
-                        editor.putString("config","false");
-                        editor.commit();
-                    }
+                    /**
+                     * 弃用，自动签到相关
+                     */
+//                    if(!user.getString("uid","").equals("")){
+//                        String patha = "http://121.5.71.186:9527/a?uid="+user.getString("uid","")+"&way=uidget"+"&cookie="+user.getString("cookie","");
+//
+//                        new Thread(){
+//                            @Override
+//                            public void run() {
+//                                networdRequest(patha);
+//                            }
+//                            private void networdRequest(String urla){
+//                                HttpURLConnection connection=null;
+//                                try {
+//                                    URL url = new URL(urla);
+//                                    connection = (HttpURLConnection) url.openConnection();
+//                                    connection.setConnectTimeout(3000);
+//                                    connection.setReadTimeout(3000);
+//                                    //设置请求方式 GET / POST 一定要大小
+//                                    connection.setRequestMethod("GET");
+//                                    connection.setDoInput(true);
+//                                    connection.setDoOutput(false);
+//                                    connection.connect();
+//                                    int responseCode = connection.getResponseCode();
+//                                    if (responseCode != HttpURLConnection.HTTP_OK) {
+//                                        throw new IOException("HTTP error code" + responseCode);
+//                                    }
+//                                    String result = getStringByStream(connection.getInputStream());
+//                                    if (result == null) {
+//                                        Log.d("Fail", "失败了");
+//                                    }else{
+//                                        Log.d("succuss", "成功了 "+result);
+//                                        if(result.equals("cunzai")){
+//                                            editor.putString("config","true");
+//                                            editor.commit();
+//                                        }
+//                                        else{
+//                                            editor.putString("config","false");
+//                                            editor.commit();
+//                                        }
+//                                    }
+//                                } catch (Exception e) {
+//                                    e.printStackTrace();
+//                                }
+//                            }
+//                            private String getStringByStream(InputStream inputStream){
+//                                Reader reader;
+//                                try {
+//                                    reader=new InputStreamReader(inputStream,"UTF-8");
+//                                    char[] rawBuffer=new char[512];
+//                                    StringBuffer buffer=new StringBuffer();
+//                                    int length;
+//                                    while ((length=reader.read(rawBuffer))!=-1){
+//                                        buffer.append(rawBuffer,0,length);
+//                                    }
+//                                    return buffer.toString();
+//                                } catch (UnsupportedEncodingException e) {
+//                                    e.printStackTrace();
+//                                } catch (IOException e) {
+//                                    e.printStackTrace();
+//                                }
+//                                return null;
+//                            }
+//                        }.start();
+//                    }
+//                    else{
+//                        editor.putString("config","false");
+//                        editor.commit();
+//                    }
 
 
                     break;
