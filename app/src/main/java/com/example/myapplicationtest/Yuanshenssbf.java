@@ -361,7 +361,7 @@ public class Yuanshenssbf extends AppCompatActivity {
                 }
             }
         };
-
+        Log.d("test2022",cookie);
         getSSBF(cookie,handle,useraaa);
         updateWidget();
 

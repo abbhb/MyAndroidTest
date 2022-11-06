@@ -29,7 +29,7 @@
     <string name="register">注册</string>
     <string name="registertip">tip:用户名全部会转化为小写\n密码8位以上，须强度需要达到强才允许注册！</string>
     <string name="ysfz">原神辅助</string>
-    <string name="yuanshenzdqd">米游社自动签到</string>
+    <string name="yuanshenzdqd">原神抽卡分析地址（可直接在提瓦特小助手使用）</string>
     <string name="uid">uid</string>
     <string name="xiugai">修改</string>
     <string name="stop">已停止</string>

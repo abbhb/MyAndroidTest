@@ -63,6 +63,8 @@ public class yuanshenlist extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_yuanshenlist);
         CookieManager cookieManage = CookieManager.getInstance();
+        Intent intent = getIntent();
+        String cookies = intent.getStringExtra("cookie");
         cookie = cookieManage.getCookie(ysLoginUrl);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         textView = (TextView) findViewById(R.id.uid);

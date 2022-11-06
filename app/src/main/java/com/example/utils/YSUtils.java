@@ -25,7 +25,9 @@ public class YSUtils {
         SharedPreferences.Editor editoraaa = useraaa.edit();
         String pathaaa = "http://121.5.71.186:9537/a?cookie="+cookie;
         if(isCookieValidity(cookie)){
+            Log.d("test2022","通过cookie校验");
             if(isTimeValidity(useraaa)&&isDataValidity(useraaa)){
+                Log.d("test2022","时间");
                 final Thread thread1 = new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -44,8 +46,8 @@ public class YSUtils {
                         try {
                             URL url = new URL(urla);
                             connection = (HttpURLConnection) url.openConnection();
-                            connection.setConnectTimeout(3000);
-                            connection.setReadTimeout(3000);
+                            connection.setConnectTimeout(4000);
+                            connection.setReadTimeout(4000);
                             //设置请求方式 GET / POST 一定要大小
                             connection.setRequestMethod("GET");
                             connection.setDoInput(true);
@@ -150,10 +152,10 @@ public class YSUtils {
     }
     public static boolean isDataValidity(SharedPreferences useraaa){
         if (useraaa.getString("cardresultdata","").equals("")){
-            return false;
+            return true;
         }
         else{
-            return true;
+            return false;
         }
     }
 

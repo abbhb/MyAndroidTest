@@ -10,18 +10,27 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import android.view.View
-import android.widget.TextView
+import android.webkit.CookieManager
+import android.webkit.WebView
+import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplicationtest.dto.ChouKaObj
+import com.example.utils.GoToApi.getWechatApi
 import com.example.utils.HttpUtilForYuanShenCKLink
-import com.example.utils.Log
-import android.webkit.CookieManager
+
+
 class MainActivityYuanShenHuoQuChouKaLink : AppCompatActivity() {
+    @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_yuan_shen_huo_qu_chou_ka_link)
+        val myWebView: WebView = findViewById(R.id.webidsforys)
+        myWebView.settings.javaScriptEnabled = true
+        myWebView.settings.domStorageEnabled = true
+
+        myWebView.loadUrl("https://user.mihoyo.com")
         val handle: Handler = object : Handler(Looper.getMainLooper()) {
             @SuppressLint("HandlerLeak")
             override fun handleMessage(msg: Message) {
@@ -29,7 +38,7 @@ class MainActivityYuanShenHuoQuChouKaLink : AppCompatActivity() {
                 msg.let {
                     val obj: ChouKaObj = msg.obj as ChouKaObj
                     if (obj.code == 200) {
-                        val textView = findViewById<TextView>(R.id.choukalink)
+                        val editText = findViewById<EditText>(R.id.input)
                         val builder: AlertDialog.Builder = AlertDialog.Builder(this@MainActivityYuanShenHuoQuChouKaLink)
 
                         if (obj.urlListObj.size > 1) {
@@ -44,7 +53,7 @@ class MainActivityYuanShenHuoQuChouKaLink : AppCompatActivity() {
                             ) { _, which ->
                                 for (listUrl in obj.urlListObj) {
                                     if (listUrl.uid == array[which]) {
-                                        textView.setText(listUrl.url)
+                                        editText.setText(listUrl.url)
                                         val cm =
                                             getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                                         //clipData中的this就是需要复制的文本
@@ -66,37 +75,46 @@ class MainActivityYuanShenHuoQuChouKaLink : AppCompatActivity() {
                             val alert = builder.create()
                             alert.show()
                         } else {
-                            textView.setText(obj.urlListObj[0].url)
+                            editText.setText(obj.urlListObj[0].url)
                             val cm = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                             //clipData中的this就是需要复制的文本
                             val clipData = ClipData.newPlainText("", obj.urlListObj[0].url)
                             cm.setPrimaryClip(clipData)
-                            Toast.makeText(this@MainActivityYuanShenHuoQuChouKaLink, "已复制到剪贴板", Toast.LENGTH_SHORT).show()
+
+                            val builders = AlertDialog.Builder(this@MainActivityYuanShenHuoQuChouKaLink)
+                            builders.setTitle("复制成功")
+                            builders.setMessage("需要我帮你跳转微信吗？")
+                            builders.setPositiveButton("需要") { dialog, which ->
+                                Toast.makeText(this@MainActivityYuanShenHuoQuChouKaLink, "抽卡分析地址已复制了哦!", Toast.LENGTH_SHORT).show()
+                                getWechatApi(baseContext)
+
+                            }
+                            builders.setNegativeButton("不需要") { dialog, which ->
+                                Toast.makeText(this@MainActivityYuanShenHuoQuChouKaLink, "不需要我,就算了吧~", Toast.LENGTH_SHORT).show()
+                            }
+                            val alert = builders.create()
+                            alert.show()
+
                         }
                     } else {
-                        Toast.makeText(this@MainActivityYuanShenHuoQuChouKaLink, "请先登录米游社"+obj.code, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@MainActivityYuanShenHuoQuChouKaLink, "请先登录米游社", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
         }
 
-        R.id.buttonidforchoukacopy.onClick(this) {
+        R.id.cookieBtn.onClick(this) {
             val instance = CookieManager.getInstance()
             val cookie = instance.getCookie("https://user.mihoyo.com")
-//            val useraaa = getSharedPreferences("user", 0)
-//            val cookie = useraaa.getString("cookie", "")
-            if (cookie != null) {
-                HttpUtilForYuanShenCKLink.getAuthKey(cookie, handle)
-                Log.d("aaa",cookie);
-            }
-            else{
-                Toast.makeText(this@MainActivityYuanShenHuoQuChouKaLink, "请检查ys-cookie", Toast.LENGTH_SHORT).show()
-            }
+            HttpUtilForYuanShenCKLink.getAuthKey(cookie, handle)
+
         }
     }
 }
+
 fun Int.onClick(activity: Activity, click: () -> Unit) {
     activity.findViewById<View>(this).setOnClickListener {
         click()
     }
 }
+

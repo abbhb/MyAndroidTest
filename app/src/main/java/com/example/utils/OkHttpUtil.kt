@@ -17,27 +17,29 @@ import kotlin.math.floor
 
 object HttpUtilForYuanShenCKLink {
     private var client = OkHttpClient().newBuilder()
-        .connectTimeout(3, TimeUnit.SECONDS)
-        .readTimeout(3, TimeUnit.SECONDS)
-        .writeTimeout(3, TimeUnit.SECONDS)
+        .connectTimeout(10, TimeUnit.SECONDS)
+        .readTimeout(10, TimeUnit.SECONDS)
+        .writeTimeout(10, TimeUnit.SECONDS)
+        .callTimeout(10,TimeUnit.SECONDS)
         .build()
 
     fun getAuthKey(cookie: String, handler: Handler): String {
         thread {
             try {
-                Log.d("2022test","到这了")
+                MyLog.d("2022test","到这了")
                 val time = Date().time
-                Log.d("2022test","时间"+time)
+                MyLog.d("2022test","时间"+time)
                 val req = Request.Builder()
                     .url("https://webapi.account.mihoyo.com/Api/login_by_cookie?t=${time}")
                     .header("Cookie", cookie)
                     .build()
                 val call = client.newCall(req)
                 val response = call.execute()
-                Log.d("2022test",response.toString())
+                call.clone()
+                MyLog.d("2022test",response.toString())
                 val loginCookieDataDtoBody = response.body?.string()
                 println("body====>${loginCookieDataDtoBody}")
-                Log.d("2022test",loginCookieDataDtoBody)
+                MyLog.d("2022test",loginCookieDataDtoBody)
                 val gson = Gson()
                 val loginCookieData = gson.fromJson(
                     loginCookieDataDtoBody,
@@ -54,8 +56,9 @@ object HttpUtilForYuanShenCKLink {
                 val multiCall = client.newCall(multiReq)
                 val multiResponse = multiCall.execute()
                 val multiDataDtoBody = multiResponse.body?.string()
+                multiCall.clone()
                 println(multiDataDtoBody)
-                Log.d("2022test",multiDataDtoBody)
+                MyLog.d("2022test",multiDataDtoBody)
                 val multiDataData = gson.fromJson(
                     multiDataDtoBody,
                     LoginTokenDto::class.java
@@ -66,7 +69,7 @@ object HttpUtilForYuanShenCKLink {
                 }
                 newcookie += cookie
                 println(newcookie)
-                Log.d("2022test",newcookie)
+                MyLog.d("2022test",newcookie)
                 //获取uid
                 val uidReq = Request.Builder()
                     .url("https://api-takumi.mihoyo.com/binding/api/getUserGameRolesByCookie?game_biz=hk4e_cn")
@@ -75,8 +78,9 @@ object HttpUtilForYuanShenCKLink {
                 val uidCall = client.newCall(uidReq)
                 val uidResponse = uidCall.execute()
                 val uidDataDtoBody = uidResponse.body?.string()
+                uidCall.clone()
                 println("uidDataDtoBody:=>>>${uidDataDtoBody}")
-                Log.d("2022test",uidDataDtoBody)
+                MyLog.d("2022test",uidDataDtoBody)
                 val userGameRolesByCookieData = gson.fromJson(
                     uidDataDtoBody,
                     UserGameRolesByCookieDataDto::class.java
@@ -91,7 +95,7 @@ object HttpUtilForYuanShenCKLink {
                     val createRequestBody =
                         toJson.toRequestBody("application/json;charset=utf-8".toMediaType())
                     println(newcookie)
-                    Log.d("2022test",newcookie)
+                    MyLog.d("2022test",newcookie)
                     val authKeyReq = Request.Builder()
                         .url("https://api-takumi.mihoyo.com/binding/api/genAuthKey")
                         .header("Content-Type", "application/json;charset=utf-8")
@@ -107,8 +111,9 @@ object HttpUtilForYuanShenCKLink {
                     val authKeyCall = client.newCall(authKeyReq)
                     val authKeyResponse = authKeyCall.execute()
                     val authKeyDataDtoBody = authKeyResponse.body?.string()
+                    authKeyCall.clone()
                     println(authKeyDataDtoBody)
-                    Log.d("2022test",authKeyDataDtoBody)
+                    MyLog.d("2022test",authKeyDataDtoBody)
                     val authKeyDataDto = gson.fromJson(
                         authKeyDataDtoBody,
                         AuthKeyDataDto::class.java
@@ -117,7 +122,7 @@ object HttpUtilForYuanShenCKLink {
                     val url =
                         "https://hk4e-api.mihoyo.com/event/gacha_info/api/getGachaLog?win_mode=fullscreen&authkey_ver=1&sign_type=2&auth_appid=webview_gacha&init_type=301&gacha_id=b4ac24d133739b7b1d55173f30ccf980e0b73fc1&lang=zh-cn&device_type=mobile&game_version=CNRELiOS3.0.0_R10283122_S10446836_D10316937&plat_type=ios&game_biz=${gameBiz}&size=20&authkey=${authKey}&region=${region}&timestamp=1664481732&gacha_type=200&page=1&end_id=0"
                     println(url)
-                    Log.d("2022test",url)
+                    MyLog.d("2022test",url)
                     listUrl.add(ListUrl(gameUid, url))
                 }
                 val msg = Message.obtain()

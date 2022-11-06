@@ -6,6 +6,6 @@ public class strings {
     }
 
 
-    public static String ysLoginUrl = "https://user.mihoyo.com";
+    public static String ysLoginUrl = "https://bbs.mihoyo.com";
     private String path = "192.168.3.43";
 }
