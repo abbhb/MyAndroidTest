@@ -57,6 +57,9 @@
 -keep class com.example.myapplicationtest.MainActivityYuanShenHuoQuChouKaLink.**{ *; }
 -keep class com.example.myapplicationtest.MainActivityYuanShenHuoQuChouKaLink
 -dontwarn kotlin.**
+-dontwarn com.example.**
 -keep class kotlin.**{*;}
 -keep interface kotlin.**{*;}
 -keep class com.example.myapplicationtest.dto.**{*;}
+-keep class com.example.utils.**{*;}
+-keep class com.example.myapplicationtest.** {*;}

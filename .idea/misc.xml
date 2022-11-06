@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/drawable/background_main.xml" value="0.1615" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/drawable/bg_button_press.xml" value="0.1235" />
         <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/drawable/circle.xml" value="0.1475" />
         <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/drawable/circle_images.xml" value="0.192" />
         <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/drawable/color1to2.xml" value="0.1515" />
@@ -67,6 +68,7 @@
         <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/xml/network_security_config.xml" value="0.1" />
         <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/xml/previous.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/xml/shape.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/qc200/AppData/Local/Android/android-sdk/platforms/android-32/data/res/layout/simple_spinner_item.xml" value="0.11928174433518597" />
       </map>
     </option>
   </component>

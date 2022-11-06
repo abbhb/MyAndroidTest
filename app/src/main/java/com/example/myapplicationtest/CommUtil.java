@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -18,15 +19,19 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.utils.GsonUtil;
+import com.example.utils.Log;
+import com.example.utils.StringUtil;
 import com.example.utils.SystemUtil;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class CommUtil {
 
-    private final String CACHE_NAME = "paimon";
+    private final String CACHE_NAME = "qumohe";
 
     private static CommUtil instance;
 
@@ -81,6 +86,7 @@ public class CommUtil {
             url.append(key).append("=").append(resultMap.get(key)).append("&");
         }
         return url.substring(0, url.length() - 2);
+
     }
 
     public void writeCacheFile(Context context, String content, String fileName) {
@@ -101,26 +107,55 @@ public class CommUtil {
             fileOutputStream.flush();
             fileOutputStream.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(e);
         }
+    }
+
+    public List<String> getAccounts(Context context) {
+        SharedPreferences cache = CommUtil.getInstance().getSharedPreferences(context);
+        List<String> uids = GsonUtil.jsonToList(cache.getString("uid", "[]"), String.class);
+        String path = context.getResources().getString(R.string.cache_path);
+        path = getFileRoot(context) + path;
+        File dir = new File(path);
+        if (!dir.exists() || dir.listFiles() == null) {
+            return uids;
+        }
+        List<String> list = Arrays.stream(dir.listFiles())
+                .map(File::getName)
+                .map(name -> name.substring(0, name.indexOf("-")))
+                .filter(name -> name.matches("\\d{9}"))
+                .distinct()
+                .collect(Collectors.toList());
+        list.removeAll(uids);
+        uids.addAll(list);
+        return uids;
     }
 
     public String readCacheFile(Context context, String fileName, String defaultValue) {
         String path = context.getResources().getString(R.string.cache_path);
         StringBuilder content = new StringBuilder();
+        BufferedReader bufferedReader = null;
         try {
             path = getFileRoot(context) + path;
             File dir = new File(path);
             if (!dir.exists()) {
                 dir.mkdirs();
             }
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(path + fileName)));
+            bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(path + fileName)));
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 content.append(line);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(e);
+        } finally {
+            if (bufferedReader != null) {
+                try {
+                    bufferedReader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         String s = content.toString();
         return "".equals(s) ? defaultValue : s;
@@ -170,15 +205,37 @@ public class CommUtil {
         return textView;
     }
 
+    public String getVersionName(Context context) {
+        try {
+            // 获取packagemanager的实例
+            PackageManager packageManager = context.getPackageManager();
+            // getPackageName()是你当前类的包名，0代表是获取版本信息
+            PackageInfo packInfo = packageManager.getPackageInfo(context.getPackageName(),0);
+            return packInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.e(e);
+        }
+        return null;
+    }
+
 
 
 
     public void showDialog(Context context, String message) {
         new AlertDialog.Builder(context)
                 .setTitle("提示").setMessage(message)
-                .setIcon(R.mipmap.favicon)
+                .setIcon(R.mipmap.ic_launcher)
                 .setPositiveButton("确定", (dialog, which) -> {})
                 .create().show();
+    }
+
+
+
+    public String getString(String str, String defaultValue) {
+        if (StringUtil.isNotBlank(str)) {
+            return str;
+        }
+        return defaultValue;
     }
 
 }

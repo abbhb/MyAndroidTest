@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:scrollbars="vertical"
     android:fadingEdge="vertical">
 
     <LinearLayout
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="vertical"
@@ -17,7 +16,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
+            android:theme="@style/Theme.QuMoHe.AppBarOverlay"
             android:paddingTop="10dp"
             android:paddingStart="10dp"
             android:paddingEnd="20dp"
@@ -25,15 +24,24 @@
             android:orientation="vertical">
 
             <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:textSize="@dimen/bigger_font_size"
+                android:text="原神抽卡分析"/>
+
+            <TextView
+                android:id="@+id/activity_main_title_tip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="15sp"
                 android:textColor="@color/black"
                 android:layout_marginTop="10dp"
-                android:text="请在下方输入框中粘贴祈愿历史记录链接"/>
+                android:text="@string/title_tips"/>
 
             <EditText
-                android:id="@+id/content"
+                android:id="@+id/contentinckfx"
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
                 android:paddingStart="10dp"
@@ -45,7 +53,7 @@
                 android:textColorHint="#888888"
                 android:textColor="@color/black"
                 android:hint="请粘贴抽卡记录链接"
-                android:background="@drawable/radius_border"/>
+                android:background="@drawable/bg_dialog_input"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -73,9 +81,9 @@
                 android:textAlignment="center"
                 android:gravity="center_vertical"
                 android:textSize="@dimen/default_font_size"
-                android:textColor="@color/red"
+                android:textColor="@color/white"
                 android:text="@string/query"
-                android:background="@drawable/radius_border_put"
+                android:background="@drawable/bg_button_press"
                 tools:ignore="RtlCompat"
                 android:clickable="true"
                 android:focusable="true" />
@@ -113,6 +121,8 @@
             </LinearLayout>
 
             <!-- 角色祈愿 -->
+
+            <!-- 常驻祈愿 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -125,9 +135,9 @@
                     android:layout_height="25dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="20dp"
+                    android:text="@string/character_title"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/default_font_size"
-                    android:text="@string/character_title"/>
+                    android:textSize="@dimen/default_font_size" />
 
                 <TextView
                     android:id="@+id/character_overview"
@@ -135,8 +145,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="20dp"
-                    android:textColor="@color/default_color"
-                    android:text="@string/overview"/>
+                    android:text="@string/overview"
+                    android:textColor="@color/default_color" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -147,14 +157,24 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/character_up_five_num"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="20dp"
+                            android:text="@string/up_five_level"
+                            android:textColor="#D59432" />
+
                         <TextView
                             android:id="@+id/character_five_num"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:layout_marginEnd="20dp"
-                            android:textColor="#D59432"
-                            android:text="@string/five_level"/>
+                            android:text="@string/five_level"
+                            android:textColor="#D59432" />
 
                         <TextView
                             android:id="@+id/character_four_num"
@@ -162,8 +182,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:layout_marginEnd="20dp"
-                            android:textColor="#A256E1"
-                            android:text="@string/four_level"/>
+                            android:text="@string/four_level"
+                            android:textColor="#A256E1" />
 
                         <TextView
                             android:id="@+id/character_three_num"
@@ -171,57 +191,167 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:layout_marginEnd="20dp"
-                            android:textColor="#7396C2"
-                            android:text="@string/three_level"/>
+                            android:text="@string/three_level"
+                            android:textColor="#7396C2" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/character_up_five_pro"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginEnd="20dp"
+                            android:text="@string/empty_probability"
+                            android:textColor="#D59432" />
+
                         <TextView
                             android:id="@+id/character_five_pro"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
                             android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
                             android:layout_marginEnd="20dp"
-                            android:textColor="#D59432"
-                            android:text="@string/empty_probability"/>
+                            android:text="@string/empty_probability"
+                            android:textColor="#D59432" />
 
                         <TextView
                             android:id="@+id/character_four_pro"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
                             android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
                             android:layout_marginEnd="20dp"
-                            android:textColor="#A256E1"
-                            android:text="@string/empty_probability"/>
+                            android:text="@string/empty_probability"
+                            android:textColor="#A256E1" />
 
                         <TextView
                             android:id="@+id/character_three_pro"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
                             android:layout_marginStart="10dp"
+                            android:layout_marginTop="10dp"
                             android:layout_marginEnd="20dp"
-                            android:textColor="#7396C2"
-                            android:text="@string/empty_probability"/>
+                            android:text="@string/empty_probability"
+                            android:textColor="#7396C2" />
                     </LinearLayout>
 
-                    <!--                    <LinearLayout-->
-                    <!--                        android:layout_width="match_parent"-->
-                    <!--                        android:layout_height="wrap_content">-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="-20dp"
+                        android:gravity="end">
 
-                    <!--                        <TextView-->
-                    <!--                            android:layout_width="wrap_content"-->
-                    <!--                            android:layout_height="wrap_content"-->
-                    <!--                            android:background=""-->
-                    <!--                            android:text="欧"/>-->
-                    <!--                    </LinearLayout>-->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="20dp"
+                                android:textColor="#D59432"
+                                android:text="@string/not_wai_ratio"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="20dp"
+                                android:textColor="#D59432"
+                                android:text="@string/wai_ratio"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="20dp"
+                                android:textColor="@color/blue"
+                                android:text="@string/continue_not_wai_num"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginEnd="20dp"
+                                android:textColor="@color/purple_200"
+                                android:text="@string/continue_wai_num"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="-15dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/not_wai_ratio"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:textColor="#D59432"
+                                android:text=""/>
+
+                            <TextView
+                                android:id="@+id/wai_ratio"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:textColor="#D59432"
+                                android:text=""/>
+
+                            <TextView
+                                android:id="@+id/continue_not_wai_num"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:textColor="@color/blue"
+                                android:text=""/>
+
+                            <TextView
+                                android:id="@+id/continue_wai_num"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:textColor="@color/purple_200"
+                                android:text=""/>
+                        </LinearLayout>
+
+                    </LinearLayout>
 
                 </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/character_five_avg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/five_avg"
+                    android:textColor="@color/default_color" />
+
+                <TextView
+                    android:id="@+id/character_five_avg_up"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/five_avg_up"
+                    android:textColor="@color/default_color" />
+
+                <TextView
+                    android:id="@+id/character_four_avg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/four_avg"
+                    android:textColor="@color/default_color" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -232,16 +362,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:textColor="@color/default_color"
-                        android:text="@string/five_seq"/>
+                        android:text="@string/five_seq"
+                        android:textColor="@color/default_color" />
 
-                    <LinearLayout
+                    <TextView
                         android:id="@+id/character_five_seq"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                    </LinearLayout>
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/default_color" />
 
                 </LinearLayout>
 
@@ -255,46 +384,19 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:textColor="@color/default_color"
-                        android:text="@string/four_seq"/>
+                        android:text="@string/four_seq"
+                        android:textColor="@color/default_color" />
 
-                    <LinearLayout
+                    <TextView
                         android:id="@+id/character_four_seq"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                    </LinearLayout>
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/default_color" />
 
                 </LinearLayout>
-
-                <TextView
-                    android:id="@+id/character_five_avg"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:textColor="@color/default_color"
-                    android:text="@string/five_avg"/>
-
-                <TextView
-                    android:id="@+id/character_five_avg_up"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:textColor="@color/default_color"
-                    android:text="@string/five_avg_up"/>
-
-                <TextView
-                    android:id="@+id/character_four_avg"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="20dp"
-                    android:textColor="@color/default_color"
-                    android:text="@string/four_avg"/>
             </LinearLayout>
 
-            <!-- 常驻祈愿 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -394,6 +496,22 @@
 
                 </LinearLayout>
 
+                <TextView
+                    android:id="@+id/standard_five_avg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/default_color"
+                    android:text="@string/five_avg"/>
+
+                <TextView
+                    android:id="@+id/standard_four_avg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/default_color"
+                    android:text="@string/four_avg"/>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -406,14 +524,12 @@
                         android:textColor="@color/default_color"
                         android:text="@string/five_seq"/>
 
-                    <LinearLayout
+                    <TextView
                         android:id="@+id/standard_five_seq"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                    </LinearLayout>
-
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/default_color" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -429,32 +545,14 @@
                         android:textColor="@color/default_color"
                         android:text="@string/four_seq"/>
 
-                    <LinearLayout
+                    <TextView
                         android:id="@+id/standard_four_seq"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                    </LinearLayout>
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/default_color" />
 
                 </LinearLayout>
-
-                <TextView
-                    android:id="@+id/standard_five_avg"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:textColor="@color/default_color"
-                    android:text="@string/five_avg"/>
-
-                <TextView
-                    android:id="@+id/standard_four_avg"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="20dp"
-                    android:textColor="@color/default_color"
-                    android:text="@string/four_avg"/>
             </LinearLayout>
 
             <!-- 武器祈愿 -->
@@ -557,6 +655,22 @@
 
                 </LinearLayout>
 
+                <TextView
+                    android:id="@+id/weapon_five_avg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/default_color"
+                    android:text="@string/five_avg"/>
+
+                <TextView
+                    android:id="@+id/weapon_four_avg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/default_color"
+                    android:text="@string/four_avg"/>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -569,13 +683,12 @@
                         android:textColor="@color/default_color"
                         android:text="@string/five_seq"/>
 
-                    <LinearLayout
+                    <TextView
                         android:id="@+id/weapon_five_seq"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                    </LinearLayout>
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/default_color" />
 
                 </LinearLayout>
 
@@ -592,32 +705,31 @@
                         android:textColor="@color/default_color"
                         android:text="@string/four_seq"/>
 
-                    <LinearLayout
+                    <TextView
                         android:id="@+id/weapon_four_seq"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                    </LinearLayout>
-
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/default_color" />
                 </LinearLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+
 
                 <TextView
-                    android:id="@+id/weapon_five_avg"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:text="仅个人使用"
                     android:textColor="@color/default_color"
-                    android:text="@string/five_avg"/>
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"/>
 
-                <TextView
-                    android:id="@+id/weapon_four_avg"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="20dp"
-                    android:textColor="@color/default_color"
-                    android:text="@string/four_avg"/>
             </LinearLayout>
         </LinearLayout>
 

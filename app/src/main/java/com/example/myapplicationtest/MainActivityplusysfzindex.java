@@ -84,7 +84,7 @@ public class MainActivityplusysfzindex extends AppCompatActivity {
         jsbutton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.d("clicklist","点击了");
-                if(cookies.equals("")){
+                if((cookies == null) ||cookies.equals("")){
                     Toast.makeText(MainActivityplusysfzindex.this, "没有cookie", Toast.LENGTH_SHORT).show();
                     return;
                 }

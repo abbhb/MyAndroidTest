@@ -16,6 +16,8 @@ import kotlin.concurrent.thread
 import kotlin.math.floor
 
 object HttpUtilForYuanShenCKLink {
+    var FORTIWATEXIAOZHUSHOU = 10001
+    var FORQUMOHECHOUKAFENXI = 10002
     private var client = OkHttpClient().newBuilder()
         .connectTimeout(10, TimeUnit.SECONDS)
         .readTimeout(10, TimeUnit.SECONDS)
@@ -23,7 +25,7 @@ object HttpUtilForYuanShenCKLink {
         .callTimeout(10,TimeUnit.SECONDS)
         .build()
 
-    fun getAuthKey(cookie: String, handler: Handler): String {
+    fun getAuthKey(cookie: String, handler: Handler,choose:Int): String {
         thread {
             try {
                 MyLog.d("2022test","到这了")
@@ -119,11 +121,23 @@ object HttpUtilForYuanShenCKLink {
                         AuthKeyDataDto::class.java
                     )
                     val authKey = URLEncoder.encode(authKeyDataDto.data.authkey, "utf-8")
-                    val url =
-                        "https://hk4e-api.mihoyo.com/event/gacha_info/api/getGachaLog?win_mode=fullscreen&authkey_ver=1&sign_type=2&auth_appid=webview_gacha&init_type=301&gacha_id=b4ac24d133739b7b1d55173f30ccf980e0b73fc1&lang=zh-cn&device_type=mobile&game_version=CNRELiOS3.0.0_R10283122_S10446836_D10316937&plat_type=ios&game_biz=${gameBiz}&size=20&authkey=${authKey}&region=${region}&timestamp=1664481732&gacha_type=200&page=1&end_id=0"
-                    println(url)
-                    MyLog.d("2022test",url)
-                    listUrl.add(ListUrl(gameUid, url))
+                    if (choose == FORQUMOHECHOUKAFENXI){
+                        val time = Date().time
+                        val zhuanhuantime = time/1000
+                        val url =
+                            "https://webstatic.mihoyo.com/hk4e/event/e20190909gacha-v2/index.html?win_mode=fullscreen&authkey_ver=1&sign_type=2&auth_appid=webview_gacha&init_type=200&timestamp=${zhuanhuantime}&lang=zh-cn&device_type=mobile&plat_type=android&region=${region}&authkey=${authKey}&game_biz=${gameBiz}#/log"
+                        println(url)
+                        MyLog.d("2022test",url)
+                        listUrl.add(ListUrl(gameUid, url))
+                    }
+                    else if (choose == FORTIWATEXIAOZHUSHOU){
+                        val url =
+                            "https://hk4e-api.mihoyo.com/event/gacha_info/api/getGachaLog?win_mode=fullscreen&authkey_ver=1&sign_type=2&auth_appid=webview_gacha&init_type=301&gacha_id=b4ac24d133739b7b1d55173f30ccf980e0b73fc1&lang=zh-cn&device_type=mobile&game_version=CNRELiOS3.0.0_R10283122_S10446836_D10316937&plat_type=ios&game_biz=${gameBiz}&size=20&authkey=${authKey}&region=${region}&timestamp=1664481732&gacha_type=200&page=1&end_id=0"
+                        println(url)
+                        MyLog.d("2022test",url)
+                        listUrl.add(ListUrl(gameUid, url))
+                    }
+
                 }
                 val msg = Message.obtain()
                 msg.obj = ChouKaObj(200, "请求成功", listUrl)

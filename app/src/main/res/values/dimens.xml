@@ -20,7 +20,8 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     -->
     <dimen name="widget_margin">0dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="big_font_size">25sp</dimen>
     <dimen name="default_font_size">20sp</dimen>
     <dimen name="small_font_size">18sp</dimen>
-
+    <dimen name="bigger_font_size">25sp</dimen>
 </resources>

@@ -35,6 +35,7 @@ public class AskMe extends AppCompatActivity {
             }
         });
     }
+
     public static boolean isQQClientAvailable(Context context) {
         final PackageManager packageManager = context.getPackageManager();
         List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);

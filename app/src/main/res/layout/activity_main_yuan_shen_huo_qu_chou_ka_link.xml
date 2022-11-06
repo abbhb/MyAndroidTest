@@ -24,7 +24,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:text="第二步：获取链接并复制到剪贴板"
+            android:text="第二步：选择链接使用的平台"
+            android:textSize="16dp" />
+
+        <Spinner android:id="@+id/Radioforchoukaxuanze"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="第三步：获取链接并复制到剪贴板"
             android:textSize="16dp" />
 
         <com.google.android.material.button.MaterialButtonToggleGroup

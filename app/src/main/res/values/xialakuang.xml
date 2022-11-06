@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="cityArray">
+        <item>趣魔盒(不用打开微信，无广告)</item>
+        <item>提瓦特小助手(好看点，广告多，得去微信小程序)</item>
+    </string-array>
+</resources>

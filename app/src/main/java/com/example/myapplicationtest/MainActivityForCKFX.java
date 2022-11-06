@@ -1,5 +1,7 @@
 package com.example.myapplicationtest;
 
+import static com.example.utils.GsonUtil.toJson;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -7,15 +9,21 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.ClipData;
+import android.content.ClipDescription;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
@@ -37,6 +45,7 @@ import com.example.utils.SystemUtil;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.IntSummaryStatistics;
@@ -59,13 +68,13 @@ public class MainActivityForCKFX extends AppCompatActivity {
             String data = msg.getData().getString("data");
             List<WishVo> wishList = GsonUtil.jsonToList(data, WishVo.class);
             switch (msg.what) {
-                case 1: showDetail(wishList, "character");
+                case 1: showDetail(wishList, "character", "301");
                     Toast.makeText(MainActivityForCKFX.this, "角色池加载完成", Toast.LENGTH_SHORT).show();
                     break;
-                case 2: showDetail(wishList, "standard");
+                case 2: showDetail(wishList, "standard", "200");
                     Toast.makeText(MainActivityForCKFX.this, "常驻池加载完成", Toast.LENGTH_SHORT).show();
                     break;
-                case 3: showDetail(wishList, "weapon");
+                case 3: showDetail(wishList, "weapon", "302");
                     Toast.makeText(MainActivityForCKFX.this, "武器池加载完成", Toast.LENGTH_SHORT).show();
                     break;
             }
@@ -80,18 +89,38 @@ public class MainActivityForCKFX extends AppCompatActivity {
             }
         }
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_for_ckfx);
-        EditText content = findViewById(R.id.content);
+
+        EditText content = findViewById(R.id.contentinckfx);
         // 读取缓存
         SharedPreferences cache = CommUtil.getInstance().getSharedPreferences(this);
         String cacheUrl = cache.getString("content", "");
+        Long time = cache.getLong("lastdate",0);
+        long time1 = new Date().getTime()/1000;
+        if (time1-time>300){
+            SharedPreferences.Editor edit = cache.edit();
+            edit.putString("content","");
+            edit.commit();
+        }
+        com.example.utils.Log.d("2022testtimelast", String.valueOf(time));
         content.setText(cacheUrl);
+        //获取剪切板内容
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //此处可放 调用获取剪切板内容的代码
+                //get_copy();
+                getCopy(MainActivityForCKFX.this,content);
+            }
+        }, 1000);//1秒后执行Runnable中的run方法
+
         // 监听按钮点击事件
         setOnClickListener(content, cache);
-        List<String> uids = GsonUtil.jsonToList(cache.getString("uid", "[]"), String.class);
+        List<String> uids = CommUtil.getInstance().getAccounts(this);
         createAccount(uids);
         if (!uids.isEmpty()) {
             showCacheRecord(uids.get(0));
@@ -107,22 +136,46 @@ public class MainActivityForCKFX extends AppCompatActivity {
                         new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1024);
             }
         }
-        // 页面跳转
-        TextView tips = findViewById(R.id.tips);
-        tips.setOnClickListener((view) -> {
-            Intent tipsIntent = new Intent(this, TipActivity.class);
-            startActivity(tipsIntent);
-        });
         // 获取最新角色配置信息
         CharacterStyle.pullConfig(this);
+
     }
+
+    private void getCopy(Context context,EditText editText) {
+        ClipboardManager clipboard = (ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE);
+        //无数据时直接返回
+        if (clipboard == null || !clipboard.hasPrimaryClip()) {
+            return;
+        }
+        //如果是文本信息
+        if (clipboard.getPrimaryClipDescription().hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN)) {
+            ClipData cdText = clipboard.getPrimaryClip();
+            ClipData.Item item = cdText.getItemAt(0);
+            //此处是TEXT文本信息
+            if (item.getText() != null) {
+                //item为剪贴板的内容，你可以取到这个字符串，然后再根据规则去进行剪贴拼接
+                String cmbcontent = item.getText().toString();
+                if (!TextUtils.isEmpty(cmbcontent)) {
+//                    System.out.println("粘贴板内容" + cmbcontent);
+                    if (cmbcontent.indexOf("https://webstatic.mihoyo.com/hk4e")!=0){
+                        if (cmbcontent.equals("/log")){
+                            editText.setText(cmbcontent);
+                        }
+                    }
+                    //进行数据处理后需要清空粘贴板
+
+                }
+            }
+        }
+    }
+
     private boolean accountToTop(String account) {
         SharedPreferences cache = CommUtil.getInstance().getSharedPreferences(this);
-        List<String> uids = GsonUtil.jsonToList(cache.getString("uid", "[]"), String.class);
+        List<String> uids = CommUtil.getInstance().getAccounts(this);
         if (uids.contains(account)) {
             uids.remove(account);
             uids.add(0, account);
-            cache.edit().putString("uid", GsonUtil.toJson(uids)).apply();
+            cache.edit().putString("uid", toJson(uids)).apply();
             createAccount(uids);
         }
         return true;
@@ -133,15 +186,18 @@ public class MainActivityForCKFX extends AppCompatActivity {
         super.onWindowFocusChanged(hasFocus);
     }
 
-    private void changeElementHideOrShow(String type, String code, String id) {
-        LinearLayout element = findViewById(id);
-        element.removeAllViews();
-        String showStr = getResources().getString(R.string.show_four_sequence);
-        TextView textView = CommUtil.getInstance().generateTextView(this, R.color.blue, showStr);
-        element.addView(textView);
-        textView.setOnClickListener((view) -> {
+    private void changeElementHideOrShow(String prefix, String code, String id) {
+        TextView element = findViewById(id);
+//        element.removeAllViews();
+//        TextView textView = CommUtil.getInstance().generateTextView(this, R.color.blue, showStr);
+//        element.addView(textView);
+        element.setText(getResources().getString(R.string.show_four_sequence));
+        element.setTextColor(getResources().getColor(R.color.blue));
+        element.setOnClickListener((view) -> {
             String character = CommUtil.getInstance().readCacheFile(this, currentAccount + "-" + code + ".json", "[]");
-            showDetail(GsonUtil.jsonToList(character, WishVo.class), type);
+            List<WishVo> wishVos = GsonUtil.jsonToList(character, WishVo.class);
+            Map<String, Object> result = analysis(wishVos);
+            addSequence((List<WishVo>) result.get("four_seq"), findViewById(prefix + "_four_seq"), "紫");
         });
     }
 
@@ -153,7 +209,7 @@ public class MainActivityForCKFX extends AppCompatActivity {
             int beginIndex = content.indexOf("https://webstatic.mihoyo.com");
             sea = beginIndex == -1;
             if (beginIndex == -1) {
-                beginIndex = content.indexOf("https://webstatic-sea.mihoyo.com");
+                beginIndex = content.indexOf("https://webstatic-sea.hoyoverse.com/");
             }
             int endIndex = content.indexOf("#/log");
             if (beginIndex == -1 || endIndex == -1 || beginIndex >= endIndex) {
@@ -232,13 +288,13 @@ public class MainActivityForCKFX extends AppCompatActivity {
         currentAccount = uid;
         // 角色池
         String character = CommUtil.getInstance().readCacheFile(this, uid + "-301.json", "[]");
-        showDetail(GsonUtil.jsonToList(character, WishVo.class), "character");
+        showDetail(GsonUtil.jsonToList(character, WishVo.class), "character", "301");
         // 常驻池
         String standard = CommUtil.getInstance().readCacheFile(this, uid + "-200.json", "[]");
-        showDetail(GsonUtil.jsonToList(standard, WishVo.class), "standard");
+        showDetail(GsonUtil.jsonToList(standard, WishVo.class), "standard", "200");
         // 武器池
         String weapon = CommUtil.getInstance().readCacheFile(this, uid + "-302.json", "[]");
-        showDetail(GsonUtil.jsonToList(weapon, WishVo.class), "weapon");
+        showDetail(GsonUtil.jsonToList(weapon, WishVo.class), "weapon", "302");
     }
 
     private void doWish(String query, int what) {
@@ -246,7 +302,7 @@ public class MainActivityForCKFX extends AppCompatActivity {
         if (what > 0 && what <= 3) {
             requestHistory(query + type.get(what),  (wishList) -> {
                 wishList = handleWishCache(wishList, type.get(what));
-                String data = GsonUtil.toJson(Optional.ofNullable(wishList).orElse(new ArrayList<>()));
+                String data = toJson(Optional.ofNullable(wishList).orElse(new ArrayList<>()));
                 CommUtil.getInstance().sendMessage(what, data, handler1);
                 doWish(query, what + 1);
             });
@@ -259,12 +315,10 @@ public class MainActivityForCKFX extends AppCompatActivity {
         }
         String uid = wishList.get(0).getUid();
         // 处理uid
-        SharedPreferences cache = CommUtil.getInstance().getSharedPreferences(this);
-        List<String> uids = GsonUtil.jsonToList(cache.getString("uid", "[]"), String.class);
+        List<String> uids = CommUtil.getInstance().getAccounts(this);
         if (!uids.contains(uid)) {
             uids.add(uid);
         }
-        cache.edit().putString("uid", GsonUtil.toJson(uids)).apply();
         createAccount(uids);
         // 处理祈愿历史记录
         String history = CommUtil.getInstance().readCacheFile(this, uid + "-" + type + ".json", "[]");
@@ -273,14 +327,14 @@ public class MainActivityForCKFX extends AppCompatActivity {
             Set<String> ids = cachedWish.stream().map(WishVo::getId).collect(Collectors.toSet());
             wishList = wishList.stream().filter(wish -> !ids.contains(wish.getId())).collect(Collectors.toList());
             cachedWish.addAll(0, wishList);
-            CommUtil.getInstance().writeCacheFile(this, GsonUtil.toJson(cachedWish), uid + "-" + type + ".json");
+            CommUtil.getInstance().writeCacheFile(this, toJson(cachedWish), uid + "-" + type + ".json");
             return cachedWish;
         }
-        CommUtil.getInstance().writeCacheFile(this, GsonUtil.toJson(wishList), uid + "-" + type + ".json");
+        CommUtil.getInstance().writeCacheFile(this, toJson(wishList), uid + "-" + type + ".json");
         return wishList;
     }
 
-    public void showDetail(List<WishVo> wishVo, String prefix) {
+    public void showDetail(List<WishVo> wishVo, String prefix, String code) {
         clearDetail(prefix);
         if (wishVo.isEmpty()) {
             return;
@@ -301,6 +355,8 @@ public class MainActivityForCKFX extends AppCompatActivity {
         partFivePro.setText((String) result.get("five_pro"));
         partFourPro.setText((String) result.get("four_pro"));
         partThreePro.setText((String) result.get("three_pro"));
+        com.example.utils.Log.d("2022test",(String) result.get("five_pro"));
+        com.example.utils.Log.d("2022test", result.toString());
         String five_avg = (String) result.get("five_avg");
         partFiveAvg.setText(five_avg);
         String four_avg = (String) result.get("four_avg");
@@ -321,6 +377,23 @@ public class MainActivityForCKFX extends AppCompatActivity {
             SpannableStringBuilder upFiveExpendStyle = new SpannableStringBuilder(five_avg_up);
             upFiveExpendStyle.setSpan(new ForegroundColorSpan(Color.MAGENTA), 11, five_avg_up.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
             partFiveAvgUp.setText(upFiveExpendStyle);
+            // up五星数
+            TextView character_up_five_num = findViewById(R.id.character_up_five_num);
+            character_up_five_num.setText((String) result.get("character_up_five_num"));
+            TextView character_up_five_pro = findViewById(R.id.character_up_five_pro);
+            character_up_five_pro.setText((String) result.get("character_up_five_pro"));
+            // 五星不歪率
+            TextView not_wai_ratio = findViewById(R.id.not_wai_ratio);
+            not_wai_ratio.setText((String) result.get("not_wai_ratio"));
+            // 五星已歪率
+            TextView wai_ratio = findViewById(R.id.wai_ratio);
+            wai_ratio.setText((String) result.get("wai_ratio"));
+            // 最大连续不歪数
+            TextView continue_not_wai_num = findViewById(R.id.continue_not_wai_num);
+            continue_not_wai_num.setText((Integer) result.get("continue_not_wai_num") + "个");
+            // 最大连续已歪数
+            TextView continue_wai_num = findViewById(R.id.continue_wai_num);
+            continue_wai_num.setText((Integer) result.get("continue_wai_num") + "个");
         }
         // 四星平均出货抽数样式
         SpannableStringBuilder fourExpendStyle = new SpannableStringBuilder(four_avg);
@@ -329,7 +402,17 @@ public class MainActivityForCKFX extends AppCompatActivity {
         // 设置五星出货顺序
         addSequence((List<WishVo>) result.get("five_seq"), findViewById(prefix + "_five_seq"), "金");
         // 设置四星出货顺序
-        addSequence((List<WishVo>) result.get("four_seq"), findViewById(prefix + "_four_seq"), "紫");
+//        addSequence((List<WishVo>) result.get("four_seq"), findViewById(prefix + "_four_seq"), "紫");
+        TextView element = findViewById(prefix + "_four_seq");
+//        TextView textView = CommUtil.getInstance().generateTextView(this, R.color.blue, showStr);
+//        element.addView(textView);
+        element.setText(getResources().getString(R.string.show_four_sequence));
+        element.setTextColor(getResources().getColor(R.color.blue));
+        element.setOnClickListener((view) -> {
+//            String character = CommUtil.getInstance().readCacheFile(this, currentAccount + "-" + code + ".json", "[]");
+//            showDetail(GsonUtil.jsonToList(character, WishVo.class), prefix, code);
+            addSequence((List<WishVo>) result.get("four_seq"), findViewById(prefix + "_four_seq"), "紫");
+        });
     }
 
     private void clearDetail(String prefix) {
@@ -342,8 +425,8 @@ public class MainActivityForCKFX extends AppCompatActivity {
         TextView threePro = findViewById(prefix + "_three_pro");
         TextView fiveAvg = findViewById(prefix + "_five_avg");
         TextView fourAvg = findViewById(prefix + "_four_avg");
-        LinearLayout fiveSeq = findViewById(prefix + "_five_seq");
-        LinearLayout fourSeq = findViewById(prefix + "_four_seq");
+//        LinearLayout fiveSeq = findViewById(prefix + "_five_seq");
+//        LinearLayout fourSeq = findViewById(prefix + "_four_seq");
         overview.setText(getResources().getString(R.string.overview));
         fiveNum.setText(getResources().getString(R.string.five_level));
         fourNum.setText(getResources().getString(R.string.four_level));
@@ -353,8 +436,8 @@ public class MainActivityForCKFX extends AppCompatActivity {
         threePro.setText(getResources().getString(R.string.empty_probability));
         fiveAvg.setText(getResources().getString(R.string.five_avg));
         fourAvg.setText(getResources().getString(R.string.four_avg));
-        fiveSeq.removeAllViews();
-        fourSeq.removeAllViews();
+//        fiveSeq.removeAllViews();
+//        fourSeq.removeAllViews();
     }
 
     private SpannableStringBuilder getOverviewStyle(List<WishVo> wishVo, String overview) {
@@ -369,30 +452,17 @@ public class MainActivityForCKFX extends AppCompatActivity {
         return overviewStyle;
     }
 
-    private void addSequence(List<WishVo> wishList, LinearLayout content, String color) {
-        // 一行能放字数极限
-        int limit = 36;
-        LinearLayout line = null;
-        if (wishList.isEmpty()) {
-            content.addView(CommUtil.getInstance().generateTextView(this, R.color.purple_200, "还未出" + color));
+    private void addSequence(List<WishVo> wishList, TextView content, String color) {
+        content.setText("");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            content.setLineHeight(SystemUtil.Px2Dp(this, 200));
         }
-        content.removeAllViews();
-        for (WishVo wishVo : wishList) {
+        SpannableStringBuilder style = new SpannableStringBuilder();
+        for (int i = 0; i < wishList.size(); i++) {
+            WishVo wishVo = wishList.get(i);
             // 四星模拟数据跳过
             if ("紫".equals(color) && "-1".equals(wishVo.getId())) {
                 continue;
-            }
-            // 一行剩余升放的字数
-            int length = wishVo.getName().length() * 2 + wishVo.getCount().length() + 2;
-            limit -= length;
-            if (line == null || limit < 0) {
-                line = new LinearLayout(MainActivityForCKFX.this);
-                LinearLayout.LayoutParams lLayoutParams = new LinearLayout.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT);
-                lLayoutParams.setLayoutDirection(LinearLayout.HORIZONTAL);
-                line.setLayoutParams(lLayoutParams);
-                content.addView(line);
             }
             // 计算颜色
             Integer colorId = CharacterStyle.get(wishVo.getName());
@@ -405,16 +475,62 @@ public class MainActivityForCKFX extends AppCompatActivity {
                 }
                 colorId = colorId == null ? R.color.default_color : colorId;
             }
-            // 将EditText放到LinearLayout里
-            line.addView(CommUtil.getInstance().generateTextView(this, colorId, wishVo.getName() + "(" + wishVo.getCount() + ")"));
-            limit = limit < 0 ? 36 - length : limit;
+            String name = wishVo.getName() + "(" + wishVo.getCount() + ")";
+            name = i == 0 ? name : "   " + name;
+            int start = style.length();
+            style.append(name);
+            style.setSpan(new ForegroundColorSpan(getResources().getColor(colorId)), start, start + name.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
+        content.setText(style);
     }
+
+//    private void addSequence(List<WishVo> wishList, LinearLayout content, String color) {
+//        // 一行能放字数极限
+//        int limit = 32;
+//        LinearLayout line = null;
+//        if (wishList.isEmpty()) {
+//            content.addView(CommUtil.getInstance().generateTextView(this, R.color.purple_200, "还未出" + color));
+//        }
+//        content.removeAllViews();
+//        int remain = limit;
+//        for (WishVo wishVo : wishList) {
+//            // 四星模拟数据跳过
+//            if ("紫".equals(color) && "-1".equals(wishVo.getId())) {
+//                continue;
+//            }
+//            // 一行剩余能放的字数（+2：两个括号，+1：空格）
+//            int length = wishVo.getName().length() * 2 + wishVo.getCount().length() + 2 + 1;
+//            remain -= length;
+//            if (line == null || remain < 0) {
+//                line = new LinearLayout(MainActivityForCKFX.this);
+//                LinearLayout.LayoutParams lLayoutParams = new LinearLayout.LayoutParams(
+//                        ViewGroup.LayoutParams.MATCH_PARENT,
+//                        ViewGroup.LayoutParams.WRAP_CONTENT);
+//                lLayoutParams.setLayoutDirection(LinearLayout.HORIZONTAL);
+//                line.setLayoutParams(lLayoutParams);
+//                content.addView(line);
+//            }
+//            // 计算颜色
+//            Integer colorId = CharacterStyle.get(wishVo.getName());
+//            if (colorId == null) {
+//                if ("4".equals(wishVo.getRank_type())) {
+//                    colorId = R.color.purple_200;
+//                }
+//                if ("5".equals(wishVo.getRank_type())) {
+//                    colorId = R.color.gold;
+//                }
+//                colorId = colorId == null ? R.color.default_color : colorId;
+//            }
+//            // 将EditText放到LinearLayout里
+//            line.addView(CommUtil.getInstance().generateTextView(this, colorId, wishVo.getName() + "(" + wishVo.getCount() + ")"));
+//            remain = remain < 0 ? limit - length : remain;
+//        }
+//    }
 
     private Map<String, Object> analysis(List<WishVo> wishList) {
         Map<String, Object> result = new HashMap<>();
         result.put("total", wishList.size() + "");
-        Set<String> standardCharacter = new HashSet<>(Arrays.asList("迪卢克", "琴", "莫娜", "刻晴", "七七"));
+        Set<String> standardCharacter = new HashSet<>(Arrays.asList("迪卢克", "琴", "莫娜", "刻晴", "七七", "提纳里"));
         // 五星角色
         List<WishVo> fivePart = getCharacterSequence(wishList, 5);
         // 四星角色
@@ -423,6 +539,10 @@ public class MainActivityForCKFX extends AppCompatActivity {
         result.put("five_seq", fivePart);
         // 四星出货顺序
         result.put("four_seq", fourPart);
+        // up五星数量
+        long up_five_num = fivePart.stream().filter(wishVo -> !standardCharacter.contains(wishVo.getName())).count();
+        result.put("character_up_five_num", "up五星：" + (up_five_num == 0L ? "还未出up" : up_five_num));
+        result.put("character_up_five_pro", "【 " + (wishList.size() == 0 ? "0": round(up_five_num * 1.0 / wishList.size())) + "% 】");
         // 五星数量
         long five = fivePart.size();
         result.put("five_num", "五星：" + (five == 0L ? "还未出金" : five));
@@ -439,14 +559,78 @@ public class MainActivityForCKFX extends AppCompatActivity {
         IntSummaryStatistics five_total = fivePart.stream().map(WishVo::getCount).map(Integer::parseInt).collect(Collectors.summarizingInt(Integer::intValue));
         result.put("five_avg", "五星平均出货抽数：" + (five == 0L ? "还未出金" : round(five_total.getAverage() / 100)));
         // up五星平均出货抽数
-        long up_five_num = fivePart.stream().filter(wishVo -> !standardCharacter.contains(wishVo.getName())).count();
         result.put("five_avg_up", "up五星平均出货抽数：" + (five == 0L || up_five_num == 0L ? "还未出up五星" : round(five_total.getSum() / up_five_num * 1.0 / 100)));
         // 四星平均出货抽数
         Double four_avg = fourPart.stream().map(WishVo::getCount).map(Integer::parseInt).collect(Collectors.averagingInt((Integer::intValue)));
         result.put("four_avg", "四星平均出货抽数：" + (four == 0L ? "还未出紫" : round( four_avg / 100)));
         // 概览（多少抽未出紫，多少抽未出金）
         result.put("overview", getOverview(wishList));
+        // 五星不歪率
+        // 第一个是常驻角色，则少减一个
+        int standard = 0;
+        if (five != 0 && standardCharacter.contains(fivePart.get(0).getName())) {
+            standard = 1;
+        }
+        long notWaiRatio = five == 0L ? 0 : (five - 2 * (five - up_five_num) + standard) * 100 / (up_five_num + standard);
+        result.put("not_wai_ratio", notWaiRatio + "%");
+        // 五星已歪率
+        result.put("wai_ratio", (100 - notWaiRatio) + "%");
+        // 最大连续不歪数
+        int notWai = continueNotWaiCharacterNum(fivePart);
+        result.put("continue_not_wai_num", notWai);
+        // 最大连续不歪数
+        int continue_wai_num = continueWaiCharacterNum(fivePart);
+        result.put("continue_wai_num", continue_wai_num);
         return result;
+    }
+
+    /**
+     * 最大连续不歪数
+     */
+    private int continueNotWaiCharacterNum(List<WishVo> fivePart) {
+        Set<String> standardCharacter = new HashSet<>(Arrays.asList("迪卢克", "琴", "莫娜", "刻晴", "七七", "提纳里"));
+        if (fivePart == null || fivePart.isEmpty()) {
+            return 0;
+        }
+        int max = 0;
+        int count = !standardCharacter.contains(fivePart.get(fivePart.size() - 1).getName()) ? 1 : 0;
+        for (int i = fivePart.size() - 2; i >= 0; i--) {
+            // 当前命中
+            boolean currentHit = !standardCharacter.contains(fivePart.get(i).getName());
+            // 上一个命中
+            boolean lastHit = !standardCharacter.contains(fivePart.get(i + 1).getName());
+            if (currentHit && lastHit) {
+                count ++;
+            } else {
+                max = Math.max(max, count);
+                count =  0;
+            }
+        }
+        return Math.max(max, count);
+    }
+
+    /**
+     * 最大连续已歪数
+     */
+    private int continueWaiCharacterNum(List<WishVo> fivePart) {
+        Set<String> standardCharacter = new HashSet<>(Arrays.asList("迪卢克", "琴", "莫娜", "刻晴", "七七", "提纳里"));
+        if (fivePart == null || fivePart.isEmpty()) {
+            return 0;
+        }
+        int max = 0;
+        int count = 0;
+        for (int i = fivePart.size() - 1; i >= 0; i--) {
+            // 当前命中
+            boolean wai = standardCharacter.contains(fivePart.get(i).getName());
+            if (wai) {
+                count++;
+                max = Math.max(max, count);
+                i --;
+            } else {
+                count = 0;
+            }
+        }
+        return max;
     }
 
     /**
@@ -530,7 +714,8 @@ public class MainActivityForCKFX extends AppCompatActivity {
                         if ("visit too frequently".equals(result.getMessage())) {
                             doRequest(0, "0", urlQuery, new ArrayList<>(), interval + 100, handler);
                         }
-                        Log.d("tag",GsonUtil.toJson(result));
+                        String s = toJson(result);
+                        Log.d("test2022",s);
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();

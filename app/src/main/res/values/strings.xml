@@ -62,23 +62,28 @@
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-    <string name="tips"><u>如何复制历史记录链接？</u></string>
+    <string name="tips"><u>前往获取抽卡链接</u></string>
+    <string name="title_tips">请在下方输入框中粘贴<u>祈愿历史记录链接</u></string>
 
     <string name="url_character_style">https://files.cnblogs.com/files/blogs/682374/character-style.json</string>
     <string name="url_wish_template">https://hk4e-api.mihoyo.com/event/gacha_info/api/getGachaLog?%s&amp;page=%s&amp;size=20&amp;end_id=%s</string>
-    <string name="url_wish_sea_template">https://hk4e-api-os.mihoyo.com/event/gacha_info/api/getGachaLog?%s&amp;page=%s&amp;size=20&amp;end_id=%s</string>
+    <string name="url_wish_sea_template">https://hk4e-api-os.hoyoverse.com/event/gacha_info/api/getGachaLog?%s&amp;page=%s&amp;size=20&amp;end_id=%s</string>
 
-
+    <string name="pingtaiforqumohe">趣魔盒(不用打开微信，无广告)</string>
+    <string name="pingtaifortiwatexiaozhushou">提瓦特小助手(好看点，广告多，得去微信小程序)</string>
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="title_activity_tip">TipActivity</string>
+    <string name="title_activity_cookie">CookieActivity</string>
     <string name="query">查询</string>
+    <string name="generate">获取抽卡链接</string>
     <string name="cache_path">/GenshinTool/cache/</string>
     <string name="apk_path">/GenshinTool/apk/</string>
     <string name="character_title">角色活动祈愿</string>
     <string name="standard_title">常驻祈愿</string>
     <string name="weapon_title">武器活动祈愿</string>
     <string name="overview">一共 0 抽，已累计 0 抽未出金，累计 0 抽未出紫</string>
+    <string name="up_five_level">up五星：</string>
     <string name="five_level">五星：</string>
     <string name="four_level">四星：</string>
     <string name="three_level">三星：</string>
@@ -90,6 +95,11 @@
     <string name="empty_probability">【  】</string>
     <string name="show_four_sequence"><u>已隐藏，点击展开</u></string>
     <string name="check_new_version"><u>检查新版本</u></string>
+    <string name="imitate_wish"><u>☞模拟抽卡（文字版）</u></string>
+    <string name="not_wai_ratio">五星不歪率：</string>
+    <string name="wai_ratio">五星已歪率：</string>
+    <string name="continue_not_wai_num">最大连续不歪数：</string>
+    <string name="continue_wai_num">最大连续已歪数：</string>
     <string name="yuanshenuserinfo">探索信息查询</string>
     <string name="yuanshenfuzhutip">系列小工具</string>
     <string name="app_updater_start_notification_content">start</string>

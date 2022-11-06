@@ -11,8 +11,8 @@ android {
         applicationId "com.example.myapplicationtest"
         minSdk 27
         targetSdk 32
-        versionCode 66
-        versionName "1.7.2"
+        versionCode 73
+        versionName "1.7.3"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //配置APP变量
         manifestPlaceholders.isYinCang = false
