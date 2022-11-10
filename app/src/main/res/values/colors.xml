@@ -9,8 +9,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="lanse">#3FA2F8</color>
     <color name="wltsztlcolor">#ff8200</color>
-    <color name="gre">#F83FDD41</color>
-    <color name="red">#F8FF0000</color>
+    <color name="gre">#F836B337</color>
+    <color name="red">#F8E12604</color>
     <color name="light_blue_50">#FFE1F5FE</color>
     <color name="light_blue_200">#FF81D4FA</color>
     <color name="light_blue_600">#FF039BE5</color>
@@ -24,5 +24,10 @@
     <color name="shui">#2593CB</color> <!-- 水 -->
     <color name="lei">#B577E2</color> <!-- 雷 -->
     <color name="yan">#F9D85D</color> <!-- 岩 -->
-    <color name="gold">#EFBC21</color>
+    <color name="cao">#42DA01</color> <!-- 岩 -->
+    <color name="gold">#EAC27D</color>
+
+    <color name="line_chart_uncomplete">#F9D85D</color>
+    <color name="line_chart_complete">#47C08A</color>
+    <color name="text_line_chart">#63686E</color>
 </resources>

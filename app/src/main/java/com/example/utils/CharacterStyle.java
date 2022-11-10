@@ -1,10 +1,15 @@
 package com.example.utils;
 
+import static com.example.utils.GsonUtil.getJson;
+
 import android.content.Context;
 
 
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
 import com.example.myapplicationtest.CommUtil;
 import com.example.myapplicationtest.R;
+import com.google.gson.Gson;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +19,8 @@ public class CharacterStyle {
     private static final Map<String, Integer> map = new HashMap<>();
 
     static {
+
+        map.put("提纳里",R.color.cao);
         map.put("神里绫人", R.color.shui);
         map.put("八重神子", R.color.lei);
         map.put("申鹤", R.color.bing);
@@ -65,19 +72,21 @@ public class CharacterStyle {
 
     public static void pullConfig(Context context) {
         String url = context.getResources().getString(R.string.url_character_style);
-        new HttpUtil().get(url, Map.class, new HttpCallBack<Map>() {
-            @Override
-            public void onSuccess(Map map) {
-                CharacterStyle.map.putAll(convertMap(map));
-                String content = GsonUtil.toJson(CharacterStyle.map);
-                CommUtil.getInstance().writeCacheFile(context, content, "character-style.json");
-            }
-
-            @Override
-            public void onFailure(String message) {
-                Log.d(message);
-            }
-        });
+//        map.putAll(convertMap(GsonUtil.parseJson(content, Map.class)));
+//        gson.fromJson(getJson("character-style.json",context),Map.class);
+//        new HttpUtil().get(url, Map.class, new HttpCallBack<Map>() {
+//            @Override
+//            public void onSuccess(Map map) {
+//                CharacterStyle.map.putAll(convertMap(map));
+//                String content = GsonUtil.toJson(CharacterStyle.map);
+////                CommUtil.getInstance().writeCacheFile(context, content, "character-style.json");
+//            }
+//
+//            @Override
+//            public void onFailure(String message) {
+//                Log.d(message);
+//            }
+//        });
         String content = CommUtil.getInstance().readCacheFile(context, "character-style.json", "{}");
         map.putAll(convertMap(GsonUtil.parseJson(content, Map.class)));
     }
@@ -94,6 +103,7 @@ public class CharacterStyle {
             case "火": return R.color.huo;
             case "水": return R.color.shui;
             case "雷": return R.color.lei;
+            case "草":return R.color.cao;
         }
         return null;
     }

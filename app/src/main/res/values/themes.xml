@@ -33,8 +33,10 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+    <!--parent="ThemeOverlay.AppCompat.Dark.ActionBar"-->
     <style name="Theme.MyApplicationTest.AppBarOverlay"
-        parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+        parent="ThemeOverlay.AppCompat.Light"
+        />
     <style name="Theme.MyApplicationTest.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
     <style name="Theme.QuMoHe" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->

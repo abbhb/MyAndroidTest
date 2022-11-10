@@ -67,6 +67,12 @@ class MainActivityYuanShenHuoQuChouKaLink : AppCompatActivity(),
                                             "已复制到剪贴板",
                                             Toast.LENGTH_SHORT
                                         ).show()
+                                        val cache = CommUtil.getInstance().getSharedPreferences(this@MainActivityYuanShenHuoQuChouKaLink)
+                                        val edit: SharedPreferences.Editor = cache.edit()
+                                        edit.putString("content", listUrl.url)
+                                        val time = Date().time/1000
+                                        edit.putLong("lastdate",time)
+                                        edit.commit()
                                     }
                                 }
                                 Toast.makeText(
@@ -96,6 +102,7 @@ class MainActivityYuanShenHuoQuChouKaLink : AppCompatActivity(),
                                     var editoraaa:SharedPreferences.Editor = cache.edit()
                                     val time = Date().time/1000
                                     editoraaa.putLong("lastdate",time)
+                                    editoraaa.putString("content", obj.urlListObj[0].url)
                                     editoraaa.commit()
                                     intent.setClass(this@MainActivityYuanShenHuoQuChouKaLink,MainActivityForCKFX::class.java)
                                     startActivity(intent)

@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -32,7 +34,12 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.myapplicationtest.Adapter.MyAdapter;
 import com.example.myapplicationtest.CommUtil;
+import com.example.myapplicationtest.Fragment.MyFragment;
+import com.example.myapplicationtest.Fragment.MyFragmentForCZ;
+import com.example.myapplicationtest.Fragment.MyFragmentForWQ;
 import com.example.myapplicationtest.entity.RequestResult;
 import com.example.myapplicationtest.entity.WishVo;
 import com.example.utils.CharacterStyle;
@@ -41,6 +48,8 @@ import com.example.utils.HttpCallBack;
 import com.example.utils.HttpUtil;
 import com.example.utils.StringUtil;
 import com.example.utils.SystemUtil;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -57,24 +66,56 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class MainActivityForCKFX extends AppCompatActivity {
+    /**
+     * 以下多页面布局相关
+     */
+    SharedPreferences sharedPreferencess;
+    SharedPreferences.Editor edits;
     private String currentAccount = null;
-
+    private TabLayout myTab;
+    List<String> titles=new ArrayList<>();
+    List<Fragment> fragments=new ArrayList<>();
+//    Bundle bundle=new Bundle();
+    private ViewPager2 myPager2;
+    MyAdapter myAdapter;
+    /**
+     * 以上多页面布局相关
+     */
     // 是否海外版
     private boolean sea = false;
 
     private final Handler handler1 = new Handler() {
+
         @Override
         public void handleMessage(@NonNull Message msg) {
             String data = msg.getData().getString("data");
             List<WishVo> wishList = GsonUtil.jsonToList(data, WishVo.class);
             switch (msg.what) {
-                case 1: showDetail(wishList, "character", "301");
+                case 1:
+//                    showDetail(wishList, "character", "301");
+
+                    edits.putString("dataup",data);
+                    edits.commit();
+//                    bundle.putString("dataup",data);
+                    //添加标题
+
+
                     Toast.makeText(MainActivityForCKFX.this, "角色池加载完成", Toast.LENGTH_SHORT).show();
                     break;
-                case 2: showDetail(wishList, "standard", "200");
+                case 2:
+//                    showDetail(wishList, "standard", "200");
+                    edits.putString("datacz",data);
+
+
+                    edits.commit();
+
                     Toast.makeText(MainActivityForCKFX.this, "常驻池加载完成", Toast.LENGTH_SHORT).show();
                     break;
-                case 3: showDetail(wishList, "weapon", "302");
+                case 3:
+//                    showDetail(wishList, "weapon", "302");
+                    edits.putString("datawq",data);
+                    edits.putLong("datalasttime",new Date().getTime()/1000);//秒
+                    edits.commit();
                     Toast.makeText(MainActivityForCKFX.this, "武器池加载完成", Toast.LENGTH_SHORT).show();
                     break;
             }
@@ -94,30 +135,80 @@ public class MainActivityForCKFX extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_for_ckfx);
+        // 获取最新角色配置信息
+        CharacterStyle.pullConfig(this);
 
+        sharedPreferencess = CommUtil.getInstance().getSharedPreferences(getApplicationContext());
+        edits = sharedPreferencess.edit();
+        myTab = findViewById(R.id.my_tab);
+        myPager2 = findViewById(R.id.my_pager2);
+        //实例化适配器
+        myAdapter=new MyAdapter(getSupportFragmentManager(),getLifecycle(),fragments);
+        titles.add("Up池");
+//        titles.add("武器池");
+        titles.add("常驻池");
+        titles.add("武器池");
+
+        //添加Fragment进去
+        MyFragment myFragment = new MyFragment();
+        fragments.add(myFragment);
+        fragments.add(new MyFragmentForCZ());
+        fragments.add(new MyFragmentForWQ());
+//        myAdapter.notifyDataSetChanged();
+        //添加Fragment进去
+
+
+//        myAdapter.notifyDataSetChanged();
+        //设置适配器
+        myPager2.setAdapter(myAdapter);
+        //TabLayout和Viewpager2进行关联
+        new TabLayoutMediator(myTab, myPager2, new TabLayoutMediator.TabConfigurationStrategy() {
+            @Override
+            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                tab.setText(titles.get(position));
+
+            }
+        }).attach();
         EditText content = findViewById(R.id.contentinckfx);
         // 读取缓存
         SharedPreferences cache = CommUtil.getInstance().getSharedPreferences(this);
-        String cacheUrl = cache.getString("content", "");
+
         Long time = cache.getLong("lastdate",0);
         long time1 = new Date().getTime()/1000;
         if (time1-time>300){
+            Toast.makeText(this, (time1-time)+"时间", Toast.LENGTH_SHORT).show();
             SharedPreferences.Editor edit = cache.edit();
             edit.putString("content","");
-            edit.commit();
-        }
-        com.example.utils.Log.d("2022testtimelast", String.valueOf(time));
-        content.setText(cacheUrl);
-        //获取剪切板内容
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //此处可放 调用获取剪切板内容的代码
-                //get_copy();
-                getCopy(MainActivityForCKFX.this,content);
-            }
-        }, 1000);//1秒后执行Runnable中的run方法
 
+            edit.commit();
+        }else{
+            String cacheUrl = cache.getString("content", "");
+            com.example.utils.Log.d("2022testtimelast", String.valueOf(time));
+            content.setText(cacheUrl);
+        }
+
+        //获取剪切板内容
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                //此处可放 调用获取剪切板内容的代码
+//                //get_copy();
+//                getCopy(MainActivityForCKFX.this,content);
+//            }
+//        }, 2000);//1秒后执行Runnable中的run方法
+//
+
+
+
+
+        findViewById(R.id.tips).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivityForCKFX.this,MainActivityYuanShenHuoQuChouKaLink.class);
+                startActivity(intent);
+                finish();
+            }
+        });
         // 监听按钮点击事件
         setOnClickListener(content, cache);
         List<String> uids = CommUtil.getInstance().getAccounts(this);
@@ -136,8 +227,7 @@ public class MainActivityForCKFX extends AppCompatActivity {
                         new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1024);
             }
         }
-        // 获取最新角色配置信息
-        CharacterStyle.pullConfig(this);
+
 
     }
 
@@ -235,15 +325,15 @@ public class MainActivityForCKFX extends AppCompatActivity {
             }
         });
         // 切换四星抽卡顺序的显示与隐藏
-        findViewById(R.id.character_four_seq_text).setOnClickListener((view) -> {
-            changeElementHideOrShow("character", "301", "character_four_seq");
-        });
-        findViewById(R.id.standard_four_seq_text).setOnClickListener((view) -> {
-            changeElementHideOrShow("standard", "200", "standard_four_seq");
-        });
-        findViewById(R.id.weapon_four_seq_text).setOnClickListener((view) -> {
-            changeElementHideOrShow("weapon", "302", "weapon_four_seq");
-        });
+//        findViewById(R.id.character_four_seq_text).setOnClickListener((view) -> {
+//            changeElementHideOrShow("character", "301", "character_four_seq");
+//        });
+//        findViewById(R.id.standard_four_seq_text).setOnClickListener((view) -> {
+//            changeElementHideOrShow("standard", "200", "standard_four_seq");
+//        });
+//        findViewById(R.id.weapon_four_seq_text).setOnClickListener((view) -> {
+//            changeElementHideOrShow("weapon", "302", "weapon_four_seq");
+//        });
         findViewById(R.id.account_question).setOnClickListener((view) -> {
             CommUtil.getInstance().showDialog(this, "长按账号可将其置顶，下次进来app将首先展示该账号信息");
         });
@@ -288,13 +378,20 @@ public class MainActivityForCKFX extends AppCompatActivity {
         currentAccount = uid;
         // 角色池
         String character = CommUtil.getInstance().readCacheFile(this, uid + "-301.json", "[]");
-        showDetail(GsonUtil.jsonToList(character, WishVo.class), "character", "301");
+        edits.putString("dataup",character);
+        edits.commit();
+//        showDetail(GsonUtil.jsonToList(character, WishVo.class), "character", "301");
+//        bundle.putString("dataup",character);
         // 常驻池
         String standard = CommUtil.getInstance().readCacheFile(this, uid + "-200.json", "[]");
-        showDetail(GsonUtil.jsonToList(standard, WishVo.class), "standard", "200");
+        edits.putString("datacz",standard);
+        edits.commit();
+        //        showDetail(GsonUtil.jsonToList(standard, WishVo.class), "standard", "200");
         // 武器池
         String weapon = CommUtil.getInstance().readCacheFile(this, uid + "-302.json", "[]");
-        showDetail(GsonUtil.jsonToList(weapon, WishVo.class), "weapon", "302");
+        edits.putString("datawq",weapon);
+        edits.commit();
+//        showDetail(GsonUtil.jsonToList(weapon, WishVo.class), "weapon", "302");
     }
 
     private void doWish(String query, int what) {
@@ -304,6 +401,8 @@ public class MainActivityForCKFX extends AppCompatActivity {
                 wishList = handleWishCache(wishList, type.get(what));
                 String data = toJson(Optional.ofNullable(wishList).orElse(new ArrayList<>()));
                 CommUtil.getInstance().sendMessage(what, data, handler1);
+
+
                 doWish(query, what + 1);
             });
         }
@@ -322,6 +421,7 @@ public class MainActivityForCKFX extends AppCompatActivity {
         createAccount(uids);
         // 处理祈愿历史记录
         String history = CommUtil.getInstance().readCacheFile(this, uid + "-" + type + ".json", "[]");
+
         if (!history.isEmpty()) {
             List<WishVo> cachedWish = GsonUtil.jsonToList(history, WishVo.class);
             Set<String> ids = cachedWish.stream().map(WishVo::getId).collect(Collectors.toSet());
@@ -416,26 +516,26 @@ public class MainActivityForCKFX extends AppCompatActivity {
     }
 
     private void clearDetail(String prefix) {
-        TextView overview = findViewById(prefix + "_overview");
-        TextView fiveNum = findViewById(prefix + "_five_num");
-        TextView fourNum = findViewById(prefix + "_four_num");
-        TextView threeNum = findViewById(prefix + "_three_num");
-        TextView fivePro = findViewById(prefix + "_five_pro");
-        TextView fourPro = findViewById(prefix + "_four_pro");
-        TextView threePro = findViewById(prefix + "_three_pro");
-        TextView fiveAvg = findViewById(prefix + "_five_avg");
-        TextView fourAvg = findViewById(prefix + "_four_avg");
+//        TextView overview = findViewById(prefix + "_overview");
+//        TextView fiveNum = findViewById(prefix + "_five_num");
+//        TextView fourNum = findViewById(prefix + "_four_num");
+//        TextView threeNum = findViewById(prefix + "_three_num");
+//        TextView fivePro = findViewById(prefix + "_five_pro");
+//        TextView fourPro = findViewById(prefix + "_four_pro");
+//        TextView threePro = findViewById(prefix + "_three_pro");
+//        TextView fiveAvg = findViewById(prefix + "_five_avg");
+//        TextView fourAvg = findViewById(prefix + "_four_avg");
 //        LinearLayout fiveSeq = findViewById(prefix + "_five_seq");
 //        LinearLayout fourSeq = findViewById(prefix + "_four_seq");
-        overview.setText(getResources().getString(R.string.overview));
-        fiveNum.setText(getResources().getString(R.string.five_level));
-        fourNum.setText(getResources().getString(R.string.four_level));
-        threeNum.setText(getResources().getString(R.string.three_level));
-        fivePro.setText(getResources().getString(R.string.empty_probability));
-        fourPro.setText(getResources().getString(R.string.empty_probability));
-        threePro.setText(getResources().getString(R.string.empty_probability));
-        fiveAvg.setText(getResources().getString(R.string.five_avg));
-        fourAvg.setText(getResources().getString(R.string.four_avg));
+//        overview.setText(getResources().getString(R.string.overview));
+//        fiveNum.setText(getResources().getString(R.string.five_level));
+//        fourNum.setText(getResources().getString(R.string.four_level));
+//        threeNum.setText(getResources().getString(R.string.three_level));
+//        fivePro.setText(getResources().getString(R.string.empty_probability));
+//        fourPro.setText(getResources().getString(R.string.empty_probability));
+//        threePro.setText(getResources().getString(R.string.empty_probability));
+//        fiveAvg.setText(getResources().getString(R.string.five_avg));
+//        fourAvg.setText(getResources().getString(R.string.four_avg));
 //        fiveSeq.removeAllViews();
 //        fourSeq.removeAllViews();
     }

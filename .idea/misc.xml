@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.153" />
         <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/drawable/background_main.xml" value="0.1615" />
         <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/drawable/bg_button_press.xml" value="0.1235" />
         <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/drawable/circle.xml" value="0.1475" />
@@ -53,8 +54,12 @@
         <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/dialog_loadding.xml" value="0.1" />
         <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/dialog_progress.xml" value="0.2913625304136253" />
         <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/fragment_first.xml" value="0.24947916666666667" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/fragment_my_fragment_for_c_z.xml" value="0.20478837109876016" />
         <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/fragment_second.xml" value="0.24947916666666667" />
         <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/msg_item.xml" value="0.25" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/myfragment.xml" value="0.3691588785046729" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/myfragment_for_c_z.xml" value="0.20478837109876016" />
+        <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/myfragment_for_w_q.xml" value="0.4" />
         <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/new_app_widget.xml" value="0.4" />
         <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/new_app_widget42.xml" value="0.264" />
         <entry key="..\:/Users/qc200/AndroidStudioProjects/MyApplicationTest/app/src/main/res/layout/new_app_widget4x2.xml" value="0.24947916666666667" />
