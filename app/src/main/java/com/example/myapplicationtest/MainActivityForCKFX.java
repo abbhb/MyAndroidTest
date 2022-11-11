@@ -11,6 +11,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.ClipboardManager;
@@ -35,8 +36,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.View.MaskUtil;
 import com.example.myapplicationtest.Adapter.MyAdapter;
 import com.example.myapplicationtest.CommUtil;
+import com.example.myapplicationtest.Fragment.FragmentNoContent;
 import com.example.myapplicationtest.Fragment.MyFragment;
 import com.example.myapplicationtest.Fragment.MyFragmentForCZ;
 import com.example.myapplicationtest.Fragment.MyFragmentForWQ;
@@ -74,9 +77,17 @@ public class MainActivityForCKFX extends AppCompatActivity {
     private String currentAccount = null;
     private TabLayout myTab;
     List<String> titles=new ArrayList<>();
+    Fragment fragmentNoContent;
     List<Fragment> fragments=new ArrayList<>();
+    private List<Integer> mFragmentHashCodes = new ArrayList<>();
 //    Bundle bundle=new Bundle();
     private ViewPager2 myPager2;
+    //就是这样一句代码就可以了
+    private ProgressDialog progressDialogJiaZai;
+    //显示遮罩层
+
+
+
     MyAdapter myAdapter;
     /**
      * 以上多页面布局相关
@@ -92,14 +103,27 @@ public class MainActivityForCKFX extends AppCompatActivity {
             List<WishVo> wishList = GsonUtil.jsonToList(data, WishVo.class);
             switch (msg.what) {
                 case 1:
+                    if (!progressDialogJiaZai.isShowing()){
+                        progressDialogJiaZai.show();
+                    }
 //                    showDetail(wishList, "character", "301");
-
+                    if (fragments.equals(fragmentNoContent)){
+                        titles.remove(0);
+                        fragments.remove(0);
+                    }
                     edits.putString("dataup",data);
                     edits.commit();
 //                    bundle.putString("dataup",data);
                     //添加标题
+                    Log.d("22022test",fragments.toString());
+                    Log.d("22022test",titles.toString());
 
-
+                    MyFragment myFragment = new MyFragment();
+                    titles.add("Up池");
+                    fragments.add(myFragment);
+                    myAdapter.notifyDataSetChanged();
+                    Log.d("22022test",fragments.toString());
+                    Log.d("22022test",titles.toString());
                     Toast.makeText(MainActivityForCKFX.this, "角色池加载完成", Toast.LENGTH_SHORT).show();
                     break;
                 case 2:
@@ -108,15 +132,35 @@ public class MainActivityForCKFX extends AppCompatActivity {
 
 
                     edits.commit();
+                    //        titles.add("武器池");
 
+                    titles.add("常驻池");
+                    fragments.add(new MyFragmentForCZ());
+                    myAdapter.notifyDataSetChanged();
                     Toast.makeText(MainActivityForCKFX.this, "常驻池加载完成", Toast.LENGTH_SHORT).show();
                     break;
                 case 3:
 //                    showDetail(wishList, "weapon", "302");
                     edits.putString("datawq",data);
-                    edits.putLong("datalasttime",new Date().getTime()/1000);//秒
+//                    edits.putLong("datalasttime",new Date().getTime()/1000);//秒
                     edits.commit();
+
+                    titles.add("武器池");
+
+                    fragments.add(new MyFragmentForWQ());
+
+                    while (fragments.size()-3>0){
+                        fragments.remove(0);
+                        titles.remove(0);
+                    }
+
+                    Log.d("22022test",fragments.toString());
+                    Log.d("22022test",titles.toString());
+                    myAdapter.notifyDataSetChanged();
                     Toast.makeText(MainActivityForCKFX.this, "武器池加载完成", Toast.LENGTH_SHORT).show();
+                    if (progressDialogJiaZai.isShowing()){
+                        progressDialogJiaZai.dismiss();
+                    }
                     break;
             }
         }
@@ -135,6 +179,9 @@ public class MainActivityForCKFX extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_for_ckfx);
+        progressDialogJiaZai = new ProgressDialog(this);
+        //显示遮罩层
+        progressDialogJiaZai.setMessage("正在获取祈愿池信息，时间可能有点长，请耐心等待");
         // 获取最新角色配置信息
         CharacterStyle.pullConfig(this);
 
@@ -142,21 +189,14 @@ public class MainActivityForCKFX extends AppCompatActivity {
         edits = sharedPreferencess.edit();
         myTab = findViewById(R.id.my_tab);
         myPager2 = findViewById(R.id.my_pager2);
-        //实例化适配器
-        myAdapter=new MyAdapter(getSupportFragmentManager(),getLifecycle(),fragments);
-        titles.add("Up池");
-//        titles.add("武器池");
-        titles.add("常驻池");
-        titles.add("武器池");
 
         //添加Fragment进去
-        MyFragment myFragment = new MyFragment();
-        fragments.add(myFragment);
-        fragments.add(new MyFragmentForCZ());
-        fragments.add(new MyFragmentForWQ());
-//        myAdapter.notifyDataSetChanged();
-        //添加Fragment进去
-
+        titles.add("Wait");
+        fragmentNoContent = new FragmentNoContent();
+        fragments.add(fragmentNoContent);
+        mFragmentHashCodes.add(fragmentNoContent.hashCode());
+//实例化适配器
+        myAdapter=new MyAdapter(getSupportFragmentManager(),getLifecycle(),fragments,mFragmentHashCodes);
 
 //        myAdapter.notifyDataSetChanged();
         //设置适配器
@@ -314,7 +354,11 @@ public class MainActivityForCKFX extends AppCompatActivity {
                 if (authKey != null && authKey.length() > 0) {
                     // 设置缓存
                     cache.edit().putString("content", url).apply();
-                    Toast.makeText(this, "正在获取祈愿池信息，时间可能有点长，请耐心等待", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(this, "正在获取祈愿池信息，时间可能有点长，请耐心等待", Toast.LENGTH_SHORT).show();
+                    if (!progressDialogJiaZai.isShowing()){
+                        progressDialogJiaZai.show();
+                    }
+
                     String urlQuery = CommUtil.getInstance().toUrl(resultMap);
                     CommUtil.getInstance().sendMessage(0, urlQuery + "&gacha_type=", handler2);
                 } else {
@@ -378,19 +422,22 @@ public class MainActivityForCKFX extends AppCompatActivity {
         currentAccount = uid;
         // 角色池
         String character = CommUtil.getInstance().readCacheFile(this, uid + "-301.json", "[]");
-        edits.putString("dataup",character);
-        edits.commit();
+//        edits.putString("dataup",character);
+//        edits.commit();
+        CommUtil.getInstance().sendMessage(1, character, handler1);
 //        showDetail(GsonUtil.jsonToList(character, WishVo.class), "character", "301");
 //        bundle.putString("dataup",character);
         // 常驻池
         String standard = CommUtil.getInstance().readCacheFile(this, uid + "-200.json", "[]");
-        edits.putString("datacz",standard);
-        edits.commit();
+//        edits.putString("datacz",standard);
+//        edits.commit();
+        CommUtil.getInstance().sendMessage(2, standard, handler1);
         //        showDetail(GsonUtil.jsonToList(standard, WishVo.class), "standard", "200");
         // 武器池
         String weapon = CommUtil.getInstance().readCacheFile(this, uid + "-302.json", "[]");
-        edits.putString("datawq",weapon);
-        edits.commit();
+        CommUtil.getInstance().sendMessage(3, weapon, handler1);
+//        edits.putString("datawq",weapon);
+//        edits.commit();
 //        showDetail(GsonUtil.jsonToList(weapon, WishVo.class), "weapon", "302");
     }
 
@@ -401,8 +448,6 @@ public class MainActivityForCKFX extends AppCompatActivity {
                 wishList = handleWishCache(wishList, type.get(what));
                 String data = toJson(Optional.ofNullable(wishList).orElse(new ArrayList<>()));
                 CommUtil.getInstance().sendMessage(what, data, handler1);
-
-
                 doWish(query, what + 1);
             });
         }

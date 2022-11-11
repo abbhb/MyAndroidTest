@@ -134,35 +134,35 @@ public class CommUtil {
     }
 
     public String readCacheFile(Context context, String fileName, String defaultValue) {
-//        String path = context.getResources().getString(R.string.cache_path);
+        String path = context.getResources().getString(R.string.cache_path);
 //        String path = context.getAssets()
-        String json = getJson(fileName, context);
-//        StringBuilder content = new StringBuilder();
-//        BufferedReader bufferedReader = null;
-//        try {
-//            path = getFileRoot(context) + path;
-//            File dir = new File(path);
-//            if (!dir.exists()) {
-//                dir.mkdirs();
-//            }
-//            bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(path + fileName)));
-//            String line;
-//            while ((line = bufferedReader.readLine()) != null) {
-//                content.append(line);
-//            }
-//        } catch (IOException e) {
-//            Log.e(e);
-//        } finally {
-//            if (bufferedReader != null) {
-//                try {
-//                    bufferedReader.close();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-//        String s = content.toString();
-        String s = json;
+//        String json = getJson(fileName, context);
+        StringBuilder content = new StringBuilder();
+        BufferedReader bufferedReader = null;
+        try {
+            path = getFileRoot(context) + path;
+            File dir = new File(path);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+            bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(path + fileName)));
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                content.append(line);
+            }
+        } catch (IOException e) {
+            Log.e(e);
+        } finally {
+            if (bufferedReader != null) {
+                try {
+                    bufferedReader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        String s = content.toString();
+//        String s = json;
         return "".equals(s) ? defaultValue : s;
     }
 

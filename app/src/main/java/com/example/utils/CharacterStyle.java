@@ -72,21 +72,19 @@ public class CharacterStyle {
 
     public static void pullConfig(Context context) {
         String url = context.getResources().getString(R.string.url_character_style);
-//        map.putAll(convertMap(GsonUtil.parseJson(content, Map.class)));
-//        gson.fromJson(getJson("character-style.json",context),Map.class);
-//        new HttpUtil().get(url, Map.class, new HttpCallBack<Map>() {
-//            @Override
-//            public void onSuccess(Map map) {
-//                CharacterStyle.map.putAll(convertMap(map));
-//                String content = GsonUtil.toJson(CharacterStyle.map);
-////                CommUtil.getInstance().writeCacheFile(context, content, "character-style.json");
-//            }
-//
-//            @Override
-//            public void onFailure(String message) {
-//                Log.d(message);
-//            }
-//        });
+        new HttpUtil().get(url, Map.class, new HttpCallBack<Map>() {
+            @Override
+            public void onSuccess(Map map) {
+                CharacterStyle.map.putAll(convertMap(map));
+                String content = GsonUtil.toJson(CharacterStyle.map);
+                CommUtil.getInstance().writeCacheFile(context, content, "character-style.json");
+            }
+
+            @Override
+            public void onFailure(String message) {
+                Log.d(message);
+            }
+        });
         String content = CommUtil.getInstance().readCacheFile(context, "character-style.json", "{}");
         map.putAll(convertMap(GsonUtil.parseJson(content, Map.class)));
     }
