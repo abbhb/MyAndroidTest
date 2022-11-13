@@ -122,7 +122,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -131,23 +131,23 @@
                 android:textColor="@color/default_color"
                 android:text="@string/five_seq"/>
 
-            <TextView
-                android:id="@+id/weapon_five_seq"
-                android:layout_width="wrap_content"
+            <ListView
+                android:id="@+id/listviewforwq"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textColor="@color/default_color" />
+                android:divider="@null">
+            </ListView>
+
+
+
+
 
         </LinearLayout>
-        <com.example.View.HorizontalBarView
-            android:id="@+id/horizontalbarwq"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/weapon_four_seq_text"

@@ -14,7 +14,7 @@ import android.widget.TextView;
 public class FirstView extends AppCompatActivity {
     private TextView skip;
     private boolean isSkip = false;
-    private int remainingtime = 3;
+    private int remainingtime = 800;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,7 +25,7 @@ public class FirstView extends AppCompatActivity {
         //创建子线程
         Thread myThread= new Thread(() -> {
             try{
-                Thread.sleep(1500);//使程序休眠3秒
+                Thread.sleep(remainingtime);//使程序休眠3秒
                 Intent it=new Intent(getApplicationContext(),MainActivity.class);//启动MainActivity
                 startActivity(it);
                 finish();//关闭当前活动

@@ -13,7 +13,8 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission
         android:name="android.permission.QUERY_ALL_PACKAGES"
-        tools:ignore="QueryAllPackagesPermission"/>
+        tools:ignore="QueryAllPackagesPermission" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -28,11 +29,13 @@
         android:theme="@style/Theme.MyApplicationTest"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-
-
+        <activity
+            android:name=".test.TestActivity"
+            android:exported="false" />
         <activity
             android:name=".MainActivityYuanShenHuoQuChouKaLink"
             android:exported="false" />
+
         <receiver
             android:name=".NewAppWidget42"
             android:exported="false">
@@ -109,9 +112,9 @@
         <activity
             android:name=".MainActivityplusysfzindex"
             android:exported="false" />
-        <activity
-            android:name=".MainActivityforcharroomregister"
-            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".MainActivityforcharroomregister"-->
+<!--            android:exported="false" />-->
         <activity
             android:name=".FirstView"
             android:excludeFromRecents="${isYinCang}"
@@ -125,12 +128,12 @@
         <activity
             android:name=".MainActivityforwlts"
             android:exported="false" />
-        <activity
-            android:name=".MainActivityforcharroomInroom"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivityforcharroom"
-            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".MainActivityforcharroomInroom"-->
+<!--            android:exported="false" />-->
+<!--        <activity-->
+<!--            android:name=".MainActivityforcharroom"-->
+<!--            android:exported="false" />-->
         <activity
             android:name=".MainActivityfortizhong"
             android:exported="false" />

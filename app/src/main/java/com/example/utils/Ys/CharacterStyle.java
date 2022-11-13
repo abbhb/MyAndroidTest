@@ -1,15 +1,14 @@
-package com.example.utils;
-
-import static com.example.utils.GsonUtil.getJson;
+package com.example.utils.Ys;
 
 import android.content.Context;
 
 
-import com.alibaba.fastjson2.JSON;
-import com.alibaba.fastjson2.JSONObject;
 import com.example.myapplicationtest.CommUtil;
 import com.example.myapplicationtest.R;
-import com.google.gson.Gson;
+import com.example.utils.GsonUtil;
+import com.example.utils.HttpCallBack;
+import com.example.utils.HttpUtil;
+import com.example.utils.Log;
 
 import java.util.HashMap;
 import java.util.Map;

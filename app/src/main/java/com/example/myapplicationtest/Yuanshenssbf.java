@@ -3,7 +3,7 @@ package com.example.myapplicationtest;
 import static androidx.constraintlayout.motion.utils.Oscillator.TAG;
 import static com.example.utils.Const.UPADTA_TIP;
 import static com.example.utils.Const.UPDATA_MSG;
-import static com.example.utils.YSUtils.getSSBF;
+import static com.example.utils.Ys.YSUtils.getSSBF;
 import static com.example.values.strings.ysLoginUrl;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,14 +33,9 @@ import org.json.JSONObject;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Yuanshenssbf extends AppCompatActivity {
 

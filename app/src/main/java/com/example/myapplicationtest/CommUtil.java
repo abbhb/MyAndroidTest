@@ -166,6 +166,36 @@ public class CommUtil {
         return "".equals(s) ? defaultValue : s;
     }
 
+    public String readJsonFile(Context context, String fileName, String defaultValue) {
+
+//        String path = context.getAssets()
+//        String json = getJson(fileName, context);
+        StringBuilder content = new StringBuilder();
+        BufferedReader bufferedReader = null;
+        try {
+            InputStream open = context.getAssets().open(fileName);
+
+            bufferedReader = new BufferedReader(new InputStreamReader(open));
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                content.append(line);
+            }
+        } catch (IOException e) {
+            Log.e(e);
+        } finally {
+            if (bufferedReader != null) {
+                try {
+                    bufferedReader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        String s = content.toString();
+//        String s = json;
+        return "".equals(s) ? defaultValue : s;
+    }
+
     private static String getFileRoot(Context context) {
         if (Environment.getExternalStorageState().equals(
                 Environment.MEDIA_MOUNTED)) {

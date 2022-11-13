@@ -1,7 +1,6 @@
 package com.example.myapplicationtest.Fragment;
 
-import static com.example.utils.GsonUtil.toJson;
-
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
@@ -12,19 +11,24 @@ import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.View.HorizontalBarView;
+import com.example.myapplicationtest.Adapter.ItemCardAdapter;
 import com.example.myapplicationtest.CommUtil;
+import com.example.myapplicationtest.ListViewClass.ItemCard;
 import com.example.myapplicationtest.R;
 import com.example.myapplicationtest.entity.WishVo;
-import com.example.utils.CharacterStyle;
+import com.example.utils.Log;
+import com.example.utils.Ys.CharacterStyle;
 import com.example.utils.GsonUtil;
 import com.example.utils.SystemUtil;
+import com.example.utils.Ys.CharacterStyleForImgUrl;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,7 +39,6 @@ import java.util.IntSummaryStatistics;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -49,10 +52,11 @@ public class MyFragmentForCZ extends Fragment {
     TextView partThreePro;
     TextView partFiveAvg;
     TextView partFourAvg;
-    TextView five_squ;
+
     TextView element;
     TextView standard_four_seq_text;
-    HorizontalBarView horizontalBarViewcz;
+
+    ListView listViewforcz;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -66,10 +70,10 @@ public class MyFragmentForCZ extends Fragment {
         partThreePro = view.findViewById(R.id.standard_three_pro);
         partFiveAvg = view.findViewById(R.id.standard_five_avg);
         partFourAvg = view.findViewById(R.id.standard_four_avg);
-        five_squ = view.findViewById(R.id.standard_five_seq);
+
         element = view.findViewById(R.id.standard_four_seq);
         standard_four_seq_text = view.findViewById(R.id.standard_four_seq_text);
-        horizontalBarViewcz = view.findViewById(R.id.horizontalbarcz);
+        listViewforcz = view.findViewById(R.id.listviewforcz);
         standard_four_seq_text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -83,39 +87,22 @@ public class MyFragmentForCZ extends Fragment {
         String data = sharedPreferences.getString("datacz","");
         if (!data.equals("")){
             List<WishVo> wishList = GsonUtil.jsonToList(data, WishVo.class);
-            showDetail(wishList, "301");
+            showDetail(wishList, "301",view.getContext());
         }
 //        String data=bundle.getString("dataup");
 
         return view;
     }
 
-    public void showDetail(List<WishVo> wishVo, String code) {
+    public void showDetail(List<WishVo> wishVo, String code,Context context) {
         clearDetail();
         if (wishVo.isEmpty()) {
             return;
         }
         Map<String, Object> result = analysis(wishVo);
-        List<WishVo> listw = (List<WishVo>) result.get("five_seq");
 
 
-        List<HorizontalBarView.HoBarEntity> entityList = new ArrayList<>();
-        for (int i=0;i<listw.size();i++){
-            WishVo wishVo1 = listw.get(i);
-            Integer colorId = CharacterStyle.get(wishVo1.getName());
-            if (colorId == null) {
-                if ("4".equals(wishVo1.getRank_type())) {
-                    colorId = R.color.purple_200;
-                }
-                if ("5".equals(wishVo1.getRank_type())) {
-                    colorId = R.color.gold;
-                }
-                colorId = (colorId == null ? R.color.default_color : colorId);
-            }
-            HorizontalBarView.HoBarEntity hoBarEntity = new HorizontalBarView.HoBarEntity(wishVo1.getName(),Integer.parseInt(wishVo1.getCount().split("抽")[0]),colorId,false);
-            entityList.add(hoBarEntity);
-        }
-        horizontalBarViewcz.setHoBarData((ArrayList<HorizontalBarView.HoBarEntity>) entityList);
+
         partFiveNum.setText((String) result.get("five_num"));
         partFourNum.setText((String) result.get("four_num"));
         partThreeNum.setText((String) result.get("three_num"));
@@ -131,6 +118,7 @@ public class MyFragmentForCZ extends Fragment {
         // 概览样式
         SpannableStringBuilder overviewStyle = getOverviewStyle(wishVo, (String) result.get("overview"));
         partOverview.setText(overviewStyle);
+        int num = getOverviewfive(wishVo);
         // 五星平均出货抽数样式
         SpannableStringBuilder fiveExpendStyle = new SpannableStringBuilder(five_avg);
         fiveExpendStyle.setSpan(new ForegroundColorSpan(Color.MAGENTA), 9, five_avg.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
@@ -141,6 +129,7 @@ public class MyFragmentForCZ extends Fragment {
         partFourAvg.setText(fourExpendStyle);
         // 设置五星出货顺序
 //        addSequence((List<WishVo>) result.get("five_seq"),five_squ , "金");
+        addSequencefive((List<WishVo>) result.get("five_seq"), context,num);
         // 设置四星出货顺序
 //        addSequence((List<WishVo>) result.get("four_seq"), view.findViewById(R.id.standard_four_seq"), "紫");
 
@@ -185,6 +174,42 @@ public class MyFragmentForCZ extends Fragment {
             style.setSpan(new ForegroundColorSpan(getResources().getColor(colorId)), start, start + name.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
         content.setText(style);
+    }
+    private void addSequencefive(List<WishVo> wishList,Context context,int num) {
+        Set<String> standardCharacter = new HashSet<>(Arrays.asList("迪卢克", "琴", "莫娜", "刻晴", "七七", "提纳里"));
+
+        List<ItemCard> itemCards = new ArrayList<>();
+        ItemCard itemCard;
+        if (num>0){
+            itemCard = new ItemCard("暂未出金",R.drawable.question_icon,num,false,ItemCard.QUESTION_IMG);
+            itemCards.add(itemCard);
+        }
+        for (int i = 0; i < wishList.size(); i++) {
+            WishVo wishVo = wishList.get(i);
+            String s = "";
+            s = CharacterStyleForImgUrl.get(wishVo.getName());
+            Log.d("2022test",s);
+            String count = wishVo.getCount();
+            String[] ss = count.split("抽");
+            boolean contains = standardCharacter.contains(wishVo.getName());
+
+            int i1ss = Integer.parseInt(ss[0]);
+            if (s==null) {
+                itemCard = new ItemCard(wishVo.getName(),R.drawable.question_icon,i1ss,contains,ItemCard.QUESTION_IMG);
+                itemCards.add(itemCard);
+            }
+            else{
+                itemCard = new ItemCard(wishVo.getName(),s,i1ss,contains);
+                itemCards.add(itemCard);
+            }
+        }
+
+        Log.d("2022test",itemCards.toString());
+        ItemCardAdapter itemCardAdapter = new ItemCardAdapter(context,R.layout.item_card,itemCards);
+        listViewforcz.setAdapter(itemCardAdapter);
+
+        setListViewHeight(listViewforcz);
+        itemCardAdapter.notifyDataSetChanged();
     }
     private void clearDetail() {
 
@@ -330,6 +355,29 @@ public class MyFragmentForCZ extends Fragment {
         Collections.reverse(sequence);
         return sequence;
     }
+
+    private int getOverviewfive(List<WishVo> wishList) {
+        int noGold = 0, noPurple = 0;
+        boolean gold = false, purple = false;
+        for (WishVo wishVo : wishList) {
+            if (!"4".equals(wishVo.getRank_type()) && !purple) {
+                noPurple ++;
+            }
+            if ("4".equals(wishVo.getRank_type())) {
+                purple = true;
+            }
+            if (!"5".equals(wishVo.getRank_type()) && !gold) {
+                noGold ++;
+            }
+            if ("5".equals(wishVo.getRank_type())) {
+                gold = true;
+            }
+            if (gold && purple) {
+                break;
+            }
+        }
+        return noGold;
+    }
     private SpannableStringBuilder getOverviewStyle(List<WishVo> wishVo, String overview) {
         SpannableStringBuilder overviewStyle = new SpannableStringBuilder(overview);
         int length = (wishVo.size() + "").length();
@@ -340,6 +388,26 @@ public class MyFragmentForCZ extends Fragment {
         overviewStyle.setSpan(new ForegroundColorSpan(Color.MAGENTA), 9 + length, second, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
         overviewStyle.setSpan(new ForegroundColorSpan(Color.MAGENTA), second + 7, third, Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
         return overviewStyle;
+    }
+
+    public void setListViewHeight(ListView listView) {
+        //获取listView的adapter
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null) {
+            return;
+        }
+        int totalHeight = 0;
+        //listAdapter.getCount()返回数据项的数目
+        for (int i = 0,len = listAdapter.getCount(); i < len; i++) {
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+        // listView.getDividerHeight()获取子项间分隔符占用的高度
+        // params.height最后得到整个ListView完整显示需要的高度
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() *  (listAdapter .getCount() - 1));
+        listView.setLayoutParams(params);
     }
 }
 

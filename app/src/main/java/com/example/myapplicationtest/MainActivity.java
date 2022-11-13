@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ActivityManager;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -27,6 +28,7 @@ import android.widget.Toast;
 //import com.example.myapplicationtest.ObjectDetection.PrePostProcessor;
 //import com.example.myapplicationtest.ObjectDetection.Result;
 import com.example.myapplicationtest.server.MyService;
+import com.example.myapplicationtest.test.TestActivity;
 import com.example.utils.Updater;
 import com.github.javiersantos.appupdater.AppUpdater;
 import com.github.javiersantos.appupdater.enums.UpdateFrom;
@@ -68,6 +70,7 @@ public class MainActivity extends AppCompatActivity{
     private static final int UPDATA_PEOPLE=2313114;
     private SharedPreferences userav;
     private SharedPreferences.Editor editorav;
+    ProgressDialog progressDialogJiaZai;
     Toolbar tl_content;
     private Typeface typeface;
 //    private Bitmap mBitmap = null;
@@ -84,6 +87,7 @@ public class MainActivity extends AppCompatActivity{
         StatusBarUtil.setGradientColor(this, tl_content);
         //把toolbar作为系统自带的Actionbar
         setSupportActionBar(tl_content);
+
 
         for (int i = 0; i < tl_content.getChildCount(); i++) {
             View view = tl_content.getChildAt(i);
@@ -118,6 +122,8 @@ public class MainActivity extends AppCompatActivity{
         userphoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, TestActivity.class);
+                startActivity(intent);
 //                Intent intent = new Intent(MainActivity.this,LoginActivity.class);
 //                startActivity(intent);
             }
@@ -152,57 +158,66 @@ public class MainActivity extends AppCompatActivity{
             }
         };
         startForegroundService(new Intent(this, MyService.class));
-        new Thread(() -> {
-            try {
-                Log.d("tag","开始socket");
-                Socket socket = new Socket("121.5.71.186", 9999);
-                Log.d("tag","cheng共");
 
-                OutputStream dout = socket.getOutputStream();
-                String str = "请求访问人数";
-                dout.write(str.getBytes());
-                // 通过shutdownOutput高速服务器已经发送完数据，后续只能接受数据
-                socket.shutdownOutput();
-                // 接收服务端发送的消息
-                InputStream din = socket.getInputStream();
-                byte[] outPut = new byte[4096];
-                while (din.read(outPut) > 0) {
-                    String result = new String(outPut);
-                    System.out.println("服务端反回的的消息是：" + result);
-                    editorav.putString("returnpeople",result);
-                    editorav.commit();
-                    if(!result.equals("")){
-                        Message msg = new Message();
-                        msg.what = UPDATA_PEOPLE;
-                        //还可以通过message.obj = "";传值
-                        msg.obj = result;
-                        handle.sendMessage(msg);
-                    }
-
-                }
-                din.close();
-                dout.close();
-                socket.close();
-
-            } catch (UnknownHostException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        }).start();
 
         String timelast = userav.getString("laststartapptime","0");
         long timeGetTime =new Date().getTime();
         if(timeGetTime-Long.parseLong(timelast)>300000||userav.getString("cardresultdata","").equals("")||userav.getString("cardresultdata","").indexOf("expeditions")==-1){
             editorav.putString("laststartapptime", String.valueOf(timeGetTime));
+            String returnpeople = userav.getString("returnpeople","");
+            Message msg = new Message();
+            msg.what = UPDATA_PEOPLE;
+            //还可以通过message.obj = "";传值
+            msg.obj = returnpeople;
+            handle.sendMessage(msg);
             if(userav.getString("cookie","").equals("")){
                 Toast.makeText(this, "不包含ys-cookie", Toast.LENGTH_SHORT).show();
-                editorav.putString("config","false");
-                editorav.commit();
+
 
             }
             else{
+                new Thread(() -> {
+                    try {
+//                Log.d("tag","开始socket");
+                        Socket socket = new Socket("121.5.71.186", 9999);
+//                Log.d("tag","cheng共");
+
+                        OutputStream dout = socket.getOutputStream();
+                        String str = "请求访问人数";
+                        dout.write(str.getBytes());
+                        // 通过shutdownOutput高速服务器已经发送完数据，后续只能接受数据
+                        socket.shutdownOutput();
+                        // 接收服务端发送的消息
+                        InputStream din = socket.getInputStream();
+                        byte[] outPut = new byte[4096];
+                        while (din.read(outPut) > 0) {
+                            String result = new String(outPut);
+//                    System.out.println("服务端反回的的消息是：" + result);
+                            editorav.putString("returnpeople",result);
+                            editorav.commit();
+                            if(!result.equals("")){
+                                Message msgs = new Message();
+                                msgs.what = UPDATA_PEOPLE;
+                                //还可以通过message.obj = "";传值
+                                msgs.obj = result;
+                                handle.sendMessage(msgs);
+                            }
+
+                        }
+                        din.close();
+                        dout.close();
+                        socket.close();
+
+                    } catch (UnknownHostException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }).start();
+
+
+
                 String path = "http://121.5.71.186:9527/a?"+"cookie="+userav.getString("cookie","");
 
                 new Thread(){
@@ -228,17 +243,16 @@ public class MainActivity extends AppCompatActivity{
                             }
                             String result = getStringByStream(connection.getInputStream());
                             if (result == null) {
-                                Log.d("Fail", "失败了");
+//                                Log.d("Fail", "失败了");
                             }else{
-                                Log.d("succuss", "成功了 ");
+//                                Log.d("succuss", "成功了 ");
                                 Message msg = new Message();
 
                                 if (result.equals("")){
                                     msg.what = COOKIE_NOT;
                                     //还可以通过message.obj = "";传值
                                     handle.sendMessage(msg);
-                                    editorav.putString("config","false");
-                                    editorav.commit();
+
                                 }
                                 else{
                                     msg.what = UPADTA_WIDGET;
@@ -289,12 +303,12 @@ public class MainActivity extends AppCompatActivity{
                 Intent tzjsq = new Intent(MainActivity.this, MainActivityfortizhong.class);
                 startActivity(tzjsq);
                 break;
-            case R.id.charroomid :
-                Log.e("clicklist","通过xml文件绑定监听");
-                Intent charroom = new Intent(MainActivity.this, MainActivityforcharroom.class);
-                charroom.putExtra("way","no");
-                startActivity(charroom);
-                break;
+//            case R.id.charroomid :
+//                Log.e("clicklist","通过xml文件绑定监听");
+//                Intent charroom = new Intent(MainActivity.this, MainActivityforcharroom.class);
+//                charroom.putExtra("way","no");
+//                startActivity(charroom);
+//                break;
             case R.id.wlts:
                 Log.e("clicklist","通过xml文件绑定监听");
                 Intent wlts = new Intent(MainActivity.this, MainActivityforwlts.class);

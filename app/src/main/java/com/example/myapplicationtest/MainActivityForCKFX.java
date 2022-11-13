@@ -1,5 +1,6 @@
 package com.example.myapplicationtest;
 
+import static android.os.SystemClock.sleep;
 import static com.example.utils.GsonUtil.toJson;
 
 import androidx.annotation.NonNull;
@@ -11,7 +12,6 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.ClipboardManager;
@@ -36,16 +36,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.View.MaskUtil;
 import com.example.myapplicationtest.Adapter.MyAdapter;
-import com.example.myapplicationtest.CommUtil;
+import com.example.myapplicationtest.Dialog.LoadingDialog;
 import com.example.myapplicationtest.Fragment.FragmentNoContent;
 import com.example.myapplicationtest.Fragment.MyFragment;
 import com.example.myapplicationtest.Fragment.MyFragmentForCZ;
 import com.example.myapplicationtest.Fragment.MyFragmentForWQ;
 import com.example.myapplicationtest.entity.RequestResult;
 import com.example.myapplicationtest.entity.WishVo;
-import com.example.utils.CharacterStyle;
+import com.example.utils.Ys.CharacterStyle;
+import com.example.utils.Ys.CharacterStyleForImgUrl;
 import com.example.utils.GsonUtil;
 import com.example.utils.HttpCallBack;
 import com.example.utils.HttpUtil;
@@ -77,14 +77,18 @@ public class MainActivityForCKFX extends AppCompatActivity {
     private String currentAccount = null;
     private TabLayout myTab;
     List<String> titles=new ArrayList<>();
+
     Fragment fragmentNoContent;
     List<Fragment> fragments=new ArrayList<>();
     private List<Integer> mFragmentHashCodes = new ArrayList<>();
 //    Bundle bundle=new Bundle();
     private ViewPager2 myPager2;
-    //就是这样一句代码就可以了
-    private ProgressDialog progressDialogJiaZai;
-    //显示遮罩层
+    //加载弹窗
+    LoadingDialog.Builder loadBuilder = new LoadingDialog.Builder(this)
+            .setMessage("加载中...可能有点久")
+            .setCancelable(true)//返回键是否可点击
+            .setCancelOutside(false);//窗体外是否可点击
+    LoadingDialog dialogsss;
 
 
 
@@ -103,9 +107,7 @@ public class MainActivityForCKFX extends AppCompatActivity {
             List<WishVo> wishList = GsonUtil.jsonToList(data, WishVo.class);
             switch (msg.what) {
                 case 1:
-                    if (!progressDialogJiaZai.isShowing()){
-                        progressDialogJiaZai.show();
-                    }
+
 //                    showDetail(wishList, "character", "301");
                     if (fragments.equals(fragmentNoContent)){
                         titles.remove(0);
@@ -158,9 +160,7 @@ public class MainActivityForCKFX extends AppCompatActivity {
                     Log.d("22022test",titles.toString());
                     myAdapter.notifyDataSetChanged();
                     Toast.makeText(MainActivityForCKFX.this, "武器池加载完成", Toast.LENGTH_SHORT).show();
-                    if (progressDialogJiaZai.isShowing()){
-                        progressDialogJiaZai.dismiss();
-                    }
+                    dialogsss.dismiss();
                     break;
             }
         }
@@ -171,30 +171,73 @@ public class MainActivityForCKFX extends AppCompatActivity {
         public void handleMessage(@NonNull Message msg) {
             if (msg.what == 0) {
                 doWish(msg.getData().getString("data"), 1);
+
             }
         }
     };
+    private final Handler handler3 = new Handler() {
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            if (msg.what == 0) {
+                LoadingDialog loadingDialog = (LoadingDialog) msg.obj;
+                loadingDialog.dismiss();
 
+            }
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_for_ckfx);
-        progressDialogJiaZai = new ProgressDialog(this);
-        //显示遮罩层
-        progressDialogJiaZai.setMessage("正在获取祈愿池信息，时间可能有点长，请耐心等待");
+
+
+
         // 获取最新角色配置信息
         CharacterStyle.pullConfig(this);
+        CharacterStyleForImgUrl.pullConfig(this);
 
         sharedPreferencess = CommUtil.getInstance().getSharedPreferences(getApplicationContext());
         edits = sharedPreferencess.edit();
+        sleep(500);
         myTab = findViewById(R.id.my_tab);
         myPager2 = findViewById(R.id.my_pager2);
-
         //添加Fragment进去
+        dialogsss = loadBuilder.create();
+        //加载弹窗
+        LoadingDialog.Builder loadBuilder = new LoadingDialog.Builder(this)
+                .setMessage("加载中...")
+                .setCancelable(true)//返回键是否可点击
+                .setCancelOutside(false);//窗体外是否可点击
+        LoadingDialog dialog = loadBuilder.create();
+        dialog.show();//显示弹窗
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                try {
+                    Thread.sleep(3000);//休眠3秒
+                    dialog.dismiss();//数据加载完成取消弹窗
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    dialog.dismiss();//数据加载完成取消弹窗
+                }
+                /**
+                 * 要执行的操作
+                 */
+            }
+        }.start();
+
+
+
+
+
+
         titles.add("Wait");
         fragmentNoContent = new FragmentNoContent();
         fragments.add(fragmentNoContent);
         mFragmentHashCodes.add(fragmentNoContent.hashCode());
+
+
 //实例化适配器
         myAdapter=new MyAdapter(getSupportFragmentManager(),getLifecycle(),fragments,mFragmentHashCodes);
 
@@ -226,7 +269,6 @@ public class MainActivityForCKFX extends AppCompatActivity {
             com.example.utils.Log.d("2022testtimelast", String.valueOf(time));
             content.setText(cacheUrl);
         }
-
         //获取剪切板内容
 //        new Handler().postDelayed(new Runnable() {
 //            @Override
@@ -355,9 +397,14 @@ public class MainActivityForCKFX extends AppCompatActivity {
                     // 设置缓存
                     cache.edit().putString("content", url).apply();
 //                    Toast.makeText(this, "正在获取祈愿池信息，时间可能有点长，请耐心等待", Toast.LENGTH_SHORT).show();
-                    if (!progressDialogJiaZai.isShowing()){
-                        progressDialogJiaZai.show();
-                    }
+
+                    dialogsss.show();//显示弹窗
+
+
+
+
+
+
 
                     String urlQuery = CommUtil.getInstance().toUrl(resultMap);
                     CommUtil.getInstance().sendMessage(0, urlQuery + "&gacha_type=", handler2);
@@ -442,6 +489,7 @@ public class MainActivityForCKFX extends AppCompatActivity {
     }
 
     private void doWish(String query, int what) {
+
         List<String> type = Arrays.asList("", "301", "200", "302");
         if (what > 0 && what <= 3) {
             requestHistory(query + type.get(what),  (wishList) -> {
