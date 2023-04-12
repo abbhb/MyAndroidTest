@@ -11,8 +11,13 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven { url 'https://jitpack.io' }  //添加jitpack仓库
-
+        maven { url 'https://dl.bintray.com/umsdk/release' }
+        maven { url 'https://maven.aliyun.com/repository/public/' }
+//        maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter' }
+//        maven { url 'http://maven.aliyun.com/nexus/content/repositories/google' }
+//        maven { url 'http://maven.aliyun.com/nexus/content/repositories/gradle-plugin' }
     }
+
 }
 
 rootProject.name = "My Application Test"

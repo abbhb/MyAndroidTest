@@ -19,5 +19,41 @@
         <item name="android:backgroundDimEnabled">false</item><!--模糊-->
         <item name="android:backgroundDimAmount">0.6</item>
     </style>
+    <declare-styleable name="MyListView">
+        <attr name="maxHeight" format="dimension" />
+    </declare-styleable>
+    <declare-styleable name="Attr_MyInfoItemView">
+        <attr name="MyInfoIconResource" format="reference" />
+        <attr name="MyInfoName" format="string" />
+    </declare-styleable>
+    <!-- 透明渐变短动画 -->
+    <style name="FadeAnimationShort" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/anim_pop_opaque</item>
+        <item name="android:windowExitAnimation">@anim/anim_pop_alpha</item>
+    </style>
+    <!--自定义seekbarstyle-->
+    <style name="CustomSeekbarStyle">
+        <item name="android:maxHeight">10dp</item>
+        <item name="android:indeterminateOnly">false</item>
+        <!--        <item name="android:indeterminateDrawable">@color/colorAccent</item>-->
+        <item name="android:progressDrawable">@drawable/seekbar_progress_drawable</item>
+        <item name="android:minHeight">10dp</item>
+        <item name="android:thumb">@mipmap/ic_light_process_point</item>
+    </style>
+    <declare-styleable name="BatteryView">
+        <attr name="battery_view_height" format="integer" />
+        <attr name="battery_view_width" format="integer" />
+        <attr name="battery_view_inside_margin" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="LightView">
+        <attr name="inSideResource" format="reference" />
+        <attr name="centerResource" format="reference" />
+        <attr name="outSideResource" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="EditTextView">
+        <attr name="hintText" format="string" />
+    </declare-styleable>
 
 </resources>

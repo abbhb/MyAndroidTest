@@ -27,6 +27,7 @@ import android.widget.Toast;
 //import com.example.myapplicationtest.ObjectDetection.ObjectDetectionActivity;
 //import com.example.myapplicationtest.ObjectDetection.PrePostProcessor;
 //import com.example.myapplicationtest.ObjectDetection.Result;
+import com.example.myapplicationtest.novel.activitys.NovelMainActivity;
 import com.example.myapplicationtest.server.MyService;
 import com.example.myapplicationtest.test.TestActivity;
 import com.example.utils.Updater;
@@ -53,6 +54,8 @@ import java.util.Date;
 import java.util.List;
 
 import androidx.appcompat.widget.Toolbar;
+
+import pl.com.salsoft.sqlitestudioremote.SQLiteStudioService;
 
 //import org.pytorch.IValue;
 //import org.pytorch.LiteModuleLoader;
@@ -88,7 +91,7 @@ public class MainActivity extends AppCompatActivity{
         //把toolbar作为系统自带的Actionbar
         setSupportActionBar(tl_content);
 
-
+        SQLiteStudioService.instance().start(this);
         for (int i = 0; i < tl_content.getChildCount(); i++) {
             View view = tl_content.getChildAt(i);
             if (view instanceof TextView) {
@@ -303,12 +306,12 @@ public class MainActivity extends AppCompatActivity{
                 Intent tzjsq = new Intent(MainActivity.this, MainActivityfortizhong.class);
                 startActivity(tzjsq);
                 break;
-//            case R.id.charroomid :
-//                Log.e("clicklist","通过xml文件绑定监听");
-//                Intent charroom = new Intent(MainActivity.this, MainActivityforcharroom.class);
+            case R.id.readnovelid:
+                Log.e("clicklist","通过xml文件绑定监听:readnovelid");
+                Intent charroom = new Intent(MainActivity.this, NovelMainActivity.class);
 //                charroom.putExtra("way","no");
-//                startActivity(charroom);
-//                break;
+                startActivity(charroom);
+                break;
             case R.id.wlts:
                 Log.e("clicklist","通过xml文件绑定监听");
                 Intent wlts = new Intent(MainActivity.this, MainActivityforwlts.class);

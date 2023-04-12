@@ -11,6 +11,9 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.example.myapplicationtest.novel.utils.UtilityAppConfig;
+import com.renrui.libraries.util.LibUtility;
+
 public class FirstView extends AppCompatActivity {
     private TextView skip;
     private boolean isSkip = false;
@@ -21,7 +24,10 @@ public class FirstView extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         //getSupportActionBar().hide();//隐藏标题栏
         setContentView(R.layout.activity_first_view);
+        LibUtility.initStatusHeight(this);
 
+        // 更新配置信息
+        UtilityAppConfig.updateConfigInfo();
         //创建子线程
         Thread myThread= new Thread(() -> {
             try{
